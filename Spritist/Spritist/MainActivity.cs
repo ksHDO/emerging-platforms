@@ -14,12 +14,12 @@ namespace Spritist
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         protected override void OnCreate(Bundle savedInstanceState)
-        {
+        {     
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
-
+            
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
@@ -65,8 +65,10 @@ namespace Spritist
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
             View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
+            Snackbar.Make(view, "Add button has been pressed", Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            
+            StartActivity(typeof(MakeSpriteActivity));
         }
 
         public bool OnNavigationItemSelected(IMenuItem item)
