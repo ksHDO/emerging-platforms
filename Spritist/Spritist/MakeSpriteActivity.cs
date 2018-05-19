@@ -17,29 +17,48 @@ namespace Spritist
     [Activity(Label = "MakeSpriteActivity")]
     public class MakeSpriteActivity : Activity
     {
-
+        const int w = 16;
+        const int h = 16;
         Canvas canvas;
         BitmapDrawable mainSpriteDisplay;
         Bitmap sourceBitmap;
-        Bitmap scaledBmp;
+        ImageView imageView;
+
+        Canvas cursorCanvas;
+        BitmapDrawable cursorSpriteDisplay;
+        Bitmap cursorBitmap;
+        ImageView cursorView;
+
+        protected void SetUpImage(ref Canvas canvas, ref BitmapDrawable drawable, ref Bitmap bitmap, ImageView view, int w, int h)
+        {
+            bitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888);
+            drawable = new BitmapDrawable(bitmap);
+            canvas = new Canvas(bitmap);
+            DrawableWrapper wr = new AliasDrawableWrapper(drawable);
+            view.SetImageDrawable(wr);
+
+        }
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.make_sprite);
-            sourceBitmap = Bitmap.CreateBitmap(16, 16, Bitmap.Config.Argb8888); //Temporary width height
-            mainSpriteDisplay = new BitmapDrawable(sourceBitmap);
-            canvas = new Canvas(sourceBitmap);
+            imageView = FindViewById<ImageView>(Resource.Id.imageView);
+            cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
+            SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, imageView, w, h);
+            SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
-            ImageView imageView = FindViewById<ImageView>(Resource.Id.imageView);
-            // Bitmap.CreateScaledBitmap(mainSpriteDisplay, 256, 256, false);
-            //imageView.
-            DrawableWrapper wr = new AliasDrawableWrapper(mainSpriteDisplay);
+            //sourceBitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888); //Temporary width height
+            //mainSpriteDisplay = new BitmapDrawable(sourceBitmap);
+            //canvas = new Canvas(sourceBitmap);
             
-            imageView.SetImageDrawable(wr);
-            
+            //DrawableWrapper wr = new AliasDrawableWrapper(mainSpriteDisplay);
+            //imageView.SetImageDrawable(wr);
+
             canvas.DrawARGB(255, 255, 0, 255);
+            cursorCanvas.DrawARGB(30, 200, 30, 255);
 
             canvas.DrawLine(0, 0, 25, 25, new Paint()
             {
@@ -53,6 +72,27 @@ namespace Spritist
 
         public override bool OnTouchEvent(MotionEvent e)
         {
+            float x = e.GetX();
+            float y = e.GetY();
+            // imageView.GetX
+            int[] position = new int[2];
+            imageView.GetLocationOnScreen(position);
+            float canvasX = x - position[0];
+            float canvasY = y - position[1];
+
+            canvasX = (canvasX / imageView.Width) * (float)w;
+            canvasY = (canvasY / imageView.Height) * (float)h;
+
+            if (canvasX >= 0.0f && canvasX < (float)w && canvasY >= 0.0f && canvasY < (float)h)
+            {
+                //sourceBitmap.SetPixel((int)canvasX, (int)canvasY, Color.Black);
+                canvas.DrawPoint(canvasX, canvasY, new Paint()
+                {
+                    Color = Color.Blue
+                });
+                imageView.Invalidate();
+            }
+            
             
             return base.OnTouchEvent(e);
         }

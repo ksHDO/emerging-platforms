@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AliasDrawableWrapper.cs" />
+    <Compile Include="CreateSpriteDialogFragment.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MakeSpriteActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -182,6 +183,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\make_sprite.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dialog_create_sprite.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
