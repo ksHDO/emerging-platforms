@@ -29,6 +29,10 @@ namespace Spritist
         Bitmap cursorBitmap;
         ImageView cursorView;
 
+        float curX = 0;
+        float curY = 0;
+
+
         protected void SetUpImage(ref Canvas canvas, ref BitmapDrawable drawable, ref Bitmap bitmap, ImageView view, int w, int h)
         {
             bitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888);
@@ -68,17 +72,59 @@ namespace Spritist
             {
                 Color = Color.Red
             });
+
+            curX = cursorView.GetX();
+            curY = cursorView.GetY();
+
         }
+
+        public void MoveCursor(float dx, float dy)
+        {
+            cursorView.SetX(cursorView.GetX() + dx);
+            cursorView.SetY(cursorView.GetY() + dy);
+            cursorView.Invalidate();
+        }
+
+
+        bool holding = false;
 
         public override bool OnTouchEvent(MotionEvent e)
         {
+
             float x = e.GetX();
             float y = e.GetY();
+
+            if (!holding && e.Action == MotionEventActions.Down)
+            {
+                holding = true;
+                curX = x;
+                curY = y;
+            }
+            else if (e.Action == MotionEventActions.Up)
+            {
+                holding = false;
+            }
+            float cursorX = 0;
+            float cursorY = 0;
+            if (holding)
+            {
+                float dx = x - curX;
+                float dy = y - curY;
+                cursorX = cursorView.GetX() + dx;
+                cursorY = cursorView.GetY() + dy;
+                curX = x;
+                curY = y;
+                MoveCursor(dx, dy);
+            }
+
+            
+
+
             // imageView.GetX
             int[] position = new int[2];
             imageView.GetLocationOnScreen(position);
-            float canvasX = x - position[0];
-            float canvasY = y - position[1];
+            float canvasX = cursorX - position[0];
+            float canvasY = cursorY - position[1];
 
             canvasX = (canvasX / imageView.Width) * (float)w;
             canvasY = (canvasY / imageView.Height) * (float)h;

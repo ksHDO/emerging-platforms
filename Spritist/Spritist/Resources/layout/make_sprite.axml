@@ -30,8 +30,6 @@
             android:maxWidth="16px"
             android:minHeight="16px"
             android:maxHeight="16px"
-            android:layout_marginLeft="60px"
-            android:layout_marginTop="70px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cursorView" />
