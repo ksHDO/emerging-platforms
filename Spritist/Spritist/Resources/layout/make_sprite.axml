@@ -30,6 +30,7 @@
             android:maxWidth="16px"
             android:minHeight="16px"
             android:maxHeight="16px"
+            android:src="@drawable/Pencil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cursorView" />

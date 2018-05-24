@@ -1,32 +1,40 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
+using Spritist.Filters;
+using Spritist.Utilities;
 
 namespace Spritist
 {
     public class CreateSpriteDialogFragment : DialogFragment
     {
-        private EditText editTextDimensionX;
-        private EditText editTextDimensionY;
+        private TextView xView;
+        private TextView yView;
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
             builder.SetTitle("Create New Sprite");
-            
-            builder.SetView(Resource.Layout.dialog_create_sprite)
+
+            LayoutInflater inflator = (LayoutInflater) Activity.GetSystemService(Context.LayoutInflaterService);
+            View view = inflator.Inflate(Resource.Layout.dialog_create_sprite, null);
+
+            builder.SetView(view)
                 .SetPositiveButton("Create!",
                     OnCreateButtonClicked)
                 .SetNegativeButton("Cancel",
                     OnCancelButtonClicked);
-            AlertDialog alertDialog = builder.Create();
-            
-            editTextDimensionX = alertDialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_x);
-            editTextDimensionY = alertDialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_y);
-            
-            return alertDialog;
+
+            xView = view.FindViewById<TextView>(Resource.Id.dialog_create_sprite_x);
+            yView = view.FindViewById<TextView>(Resource.Id.dialog_create_sprite_y);
+            xView.SetFilters(new IInputFilter[]{new InputFilterClamp(1, 64) });
+            yView.SetFilters(new IInputFilter[]{new InputFilterClamp(1, 64) });
+
+            return builder.Create();
         }
 
         private void OnCancelButtonClicked(object sender, DialogClickEventArgs e)
@@ -36,17 +44,36 @@ namespace Spritist
 
         private void OnCreateButtonClicked(object sender, DialogClickEventArgs e)
         {
+            Dialog dialog = (Dialog) sender;
+            xView = dialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_x);
+            yView = dialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_y);
+
             Intent intent = new Intent();
             intent.SetClass(Activity, typeof(MakeSpriteActivity));
             Bundle bundle = new Bundle();
-            
-            //bundle.PutIntArray(GetString(Resource.String.bundle_sprite_dimensions), new[]
-            //{
-            //    int.Parse(editTextDimensionX.Text),
-            //    int.Parse(editTextDimensionY.Text)
-            //});
 
-            StartActivity(intent, bundle);
+            int xDimension = 16, yDimension = 16;
+            if (!string.IsNullOrWhiteSpace(xView.Text))
+            {
+                int x = int.Parse(xView.Text);
+                xDimension = x;
+            }
+
+            if (!string.IsNullOrWhiteSpace(yView.Text))
+            {
+                int y = int.Parse((yView.Text));
+                yDimension = y;
+            }
+
+            bundle.PutIntArray(GetString(Resource.String.bundle_sprite_dimensions), new[]
+            {
+                xDimension,
+                yDimension
+            });
+
+            intent.PutExtras(bundle);
+
+            StartActivity(intent);
         }
     }
 }

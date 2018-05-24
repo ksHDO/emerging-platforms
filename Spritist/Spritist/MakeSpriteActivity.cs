@@ -17,8 +17,8 @@ namespace Spritist
     [Activity(Label = "MakeSpriteActivity")]
     public class MakeSpriteActivity : Activity
     {
-        const int w = 16;
-        const int h = 16;
+        int w = 16;
+        int h = 16;
         Canvas canvas;
         BitmapDrawable mainSpriteDisplay;
         Bitmap sourceBitmap;
@@ -48,21 +48,27 @@ namespace Spritist
         {
             base.OnCreate(savedInstanceState);
 
+            int[] dimensions = Intent.Extras.GetIntArray(
+                GetString(Resource.String.bundle_sprite_dimensions));
+
+            w = dimensions[0];
+            h = dimensions[1];
+
             SetContentView(Resource.Layout.make_sprite);
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
             SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, imageView, w, h);
-            SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
+            //SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
             //sourceBitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888); //Temporary width height
             //mainSpriteDisplay = new BitmapDrawable(sourceBitmap);
             //canvas = new Canvas(sourceBitmap);
-            
+
             //DrawableWrapper wr = new AliasDrawableWrapper(mainSpriteDisplay);
             //imageView.SetImageDrawable(wr);
 
             canvas.DrawARGB(255, 255, 0, 255);
-            cursorCanvas.DrawARGB(30, 200, 30, 255);
+            //cursorCanvas.DrawARGB(30, 200, 30, 255);
 
             canvas.DrawLine(0, 0, 25, 25, new Paint()
             {
@@ -108,17 +114,17 @@ namespace Spritist
             float cursorY = 0;
             if (holding)
             {
+                int[] locs = new int[3];
+                cursorView.GetLocationOnScreen(locs);
+
                 float dx = x - curX;
                 float dy = y - curY;
-                cursorX = cursorView.GetX() + dx;
-                cursorY = cursorView.GetY() + dy;
+                cursorX = locs[0] + dx;
+                cursorY = locs[1] + dy;
                 curX = x;
                 curY = y;
                 MoveCursor(dx, dy);
             }
-
-            
-
 
             // imageView.GetX
             int[] position = new int[2];
