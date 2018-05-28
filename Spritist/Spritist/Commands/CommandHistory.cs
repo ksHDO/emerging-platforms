@@ -7,6 +7,9 @@ namespace Spritist.Commands
         private readonly Stack<ICommand> undoHistory;
         private readonly Stack<ICommand> redoHistory;
 
+        public bool CanUndo() => undoHistory.Count > 0;
+        public bool CanRedo() => redoHistory.Count > 0;
+
         public CommandHistory()
         {
             undoHistory = new Stack<ICommand>();
@@ -16,7 +19,7 @@ namespace Spritist.Commands
         public void Perform(ICommand command)
         {
             redoHistory.Clear();
-            command.Perform();
+            //command.Perform();
             undoHistory.Push(command);
         }
 
@@ -25,7 +28,7 @@ namespace Spritist.Commands
             if (undoHistory.Count > 0)
             {
                 ICommand command = undoHistory.Pop();
-                command.Perform();
+                command.Undo();
                 redoHistory.Push(command);
             }
         }
@@ -35,7 +38,7 @@ namespace Spritist.Commands
             if (redoHistory.Count > 0)
             {
                 ICommand command = redoHistory.Pop();
-                command.Perform();
+                command.Redo();
                 undoHistory.Push(command);
             }
         }

@@ -2,7 +2,7 @@
 {
     public interface ICommand
     {
-        void Perform();
+        void Redo();
         void Undo();
     }
 }

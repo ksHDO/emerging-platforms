@@ -9,8 +9,13 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using Spritist.Commands;
+using Spritist.Tools;
+
 
 namespace Spritist
 {
@@ -32,6 +37,13 @@ namespace Spritist
         float curX = 0;
         float curY = 0;
 
+        private CommandHistory commandHistory;
+        private DrawPathCommand drawPathCommand;
+
+        private Tool[] tools;
+        private Tool currentTool;
+
+        private DrawerLayout drawerLayout;
 
         protected void SetUpImage(ref Canvas canvas, ref BitmapDrawable drawable, ref Bitmap bitmap, ImageView view, int w, int h)
         {
@@ -40,13 +52,13 @@ namespace Spritist
             canvas = new Canvas(bitmap);
             DrawableWrapper wr = new AliasDrawableWrapper(drawable);
             view.SetImageDrawable(wr);
-
+            
         }
-
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
 
             int[] dimensions = Intent.Extras.GetIntArray(
                 GetString(Resource.String.bundle_sprite_dimensions));
@@ -54,10 +66,27 @@ namespace Spritist
             w = dimensions[0];
             h = dimensions[1];
 
-            SetContentView(Resource.Layout.make_sprite);
+            SetContentView(Resource.Layout.activity_make_sprite);
+
+            // Setup Drawer
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_make_sprite);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, null,
+                Resource.String.navigation_drawer_open,
+                Resource.String.navigation_drawer_close);
+            drawerLayout.AddDrawerListener(toggle);
+
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
+
             SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, imageView, w, h);
+
+            commandHistory = new CommandHistory();
+            //Seems redundant for now
+            tools = new Tool[1];
+            tools[0] = new PencilTool(commandHistory, sourceBitmap);
+            currentTool = tools[0];
+
+
             //SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
             //sourceBitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888); //Temporary width height
@@ -82,6 +111,43 @@ namespace Spritist
             curX = cursorView.GetX();
             curY = cursorView.GetY();
 
+
+
+            SetupButtons();
+        }
+
+        private void SetupButtons()
+        {
+            ImageButton menuButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_menu_button);
+            ImageButton pencilButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_pencil_button);
+            ImageButton pencilSettingsButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_pencil_settings_button);
+            ImageButton eraserButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_eraser_button);
+            ImageButton eraserSettingsButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_eraser_settings_button);
+            ImageButton undoButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_undo_button);
+            ImageButton redoButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_redo_button);
+
+            menuButton.Click += (sender, args) =>
+                drawerLayout.OpenDrawer((int) GravityFlags.Left);
+
+            undoButton.Click +=
+                (sender, args) =>
+                {
+                    commandHistory.Undo();
+                    imageView.Invalidate();
+                };
+            redoButton.Click +=
+                (sender, args) =>
+                {
+                    commandHistory.Redo();
+                    imageView.Invalidate();
+                };
         }
 
         public void MoveCursor(float dx, float dy)
@@ -109,7 +175,10 @@ namespace Spritist
             else if (e.Action == MotionEventActions.Up)
             {
                 holding = false;
+                
             }
+
+            
             float cursorX = 0;
             float cursorY = 0;
             if (holding)
@@ -135,13 +204,30 @@ namespace Spritist
             canvasX = (canvasX / imageView.Width) * (float)w;
             canvasY = (canvasY / imageView.Height) * (float)h;
 
+            if (e.Action == MotionEventActions.Down)
+            {
+                //drawPathCommand = new DrawPathCommand(sourceBitmap, Color.Blue);
+                currentTool.OnDown((int)canvasX, (int)canvasY);
+            }
+            else if (e.Action == MotionEventActions.Up)
+            {
+                //commandHistory.Perform(drawPathCommand);
+                currentTool.OnUp((int)canvasX, (int)canvasY);
+            }
+
             if (canvasX >= 0.0f && canvasX < (float)w && canvasY >= 0.0f && canvasY < (float)h)
             {
                 //sourceBitmap.SetPixel((int)canvasX, (int)canvasY, Color.Black);
-                canvas.DrawPoint(canvasX, canvasY, new Paint()
+                //canvas.DrawPoint(canvasX, canvasY, new Paint()
+                //{
+                //    Color = Color.Blue
+                //});
+                if (e.Action == MotionEventActions.Move)
                 {
-                    Color = Color.Blue
-                });
+                    //drawPathCommand.AddPixel((int) canvasX, (int) canvasY);
+                    currentTool.OnMove((int)canvasX, (int)canvasY);
+                }
+
                 imageView.Invalidate();
             }
             

@@ -16,5 +16,18 @@ namespace Spritist.Utilities
                 output = max;
             return output;
         }
+
+        /// <summary>
+        /// Returns in the specified value is within the min and max values, inclusive.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="val">The value.</param>
+        /// <param name="min">The minimum.</param>
+        /// <param name="max">The maximum.</param>
+        /// <returns></returns>
+        public static bool InRange<T>(T val, T min, T max) where T : IComparable
+        {
+            return (val.CompareTo(min) >= 0 && val.CompareTo(max) <= 0);
+        }
     }
 }
