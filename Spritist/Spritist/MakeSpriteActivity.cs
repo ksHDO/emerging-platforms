@@ -44,7 +44,8 @@ namespace Spritist
         private Tool currentTool;
 
         private DrawerLayout drawerLayout;
-
+        int[] buttonLocs = new int[3];
+        
         protected void SetUpImage(ref Canvas canvas, ref BitmapDrawable drawable, ref Bitmap bitmap, ImageView view, int w, int h)
         {
             bitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888);
@@ -66,14 +67,14 @@ namespace Spritist
             w = dimensions[0];
             h = dimensions[1];
 
-            SetContentView(Resource.Layout.activity_make_sprite);
-
-            // Setup Drawer
-            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_make_sprite);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, null,
-                Resource.String.navigation_drawer_open,
-                Resource.String.navigation_drawer_close);
-            drawerLayout.AddDrawerListener(toggle);
+            SetContentView(Resource.Layout.make_sprite);
+            FindViewById<Button>(Resource.Id.drawButton).GetLocationOnScreen(buttonLocs);
+            //// Setup Drawer
+            //drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_make_sprite);
+            //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, null,
+            //    Resource.String.navigation_drawer_open,
+            //    Resource.String.navigation_drawer_close);
+            //drawerLayout.AddDrawerListener(toggle);
 
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
@@ -133,8 +134,8 @@ namespace Spritist
             ImageButton redoButton =
                 FindViewById<ImageButton>(Resource.Id.make_sprite_redo_button);
 
-            menuButton.Click += (sender, args) =>
-                drawerLayout.OpenDrawer((int) GravityFlags.Left);
+            //menuButton.Click += (sender, args) =>
+            //    drawerLayout.OpenDrawer((int) GravityFlags.Left);
 
             undoButton.Click +=
                 (sender, args) =>
@@ -160,9 +161,14 @@ namespace Spritist
 
         bool holding = false;
 
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            
+            return base.DispatchTouchEvent(ev);
+        }
+
         public override bool OnTouchEvent(MotionEvent e)
         {
-
             float x = e.GetX();
             float y = e.GetY();
 
@@ -175,7 +181,6 @@ namespace Spritist
             else if (e.Action == MotionEventActions.Up)
             {
                 holding = false;
-                
             }
 
             
@@ -185,7 +190,7 @@ namespace Spritist
             {
                 int[] locs = new int[3];
                 cursorView.GetLocationOnScreen(locs);
-
+                
                 float dx = x - curX;
                 float dy = y - curY;
                 cursorX = locs[0] + dx;
@@ -193,6 +198,7 @@ namespace Spritist
                 curX = x;
                 curY = y;
                 MoveCursor(dx, dy);
+                
             }
 
             // imageView.GetX

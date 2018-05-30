@@ -2,11 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
-
   <group android:checkableBehavior="single">
     <item
       android:id="@+id/nav_save"
       android:icon="@drawable/ic_menu_camera"
       android:title="Save" />
+    <item
+      android:id="@+id/nav_export"
+      android:icon="@drawable/ic_menu_camera"
+      android:title="Export to PNG" />
+    <item
+      android:id="@+id/nav_exit_sprite"
+      android:icon="@drawable/ic_menu_camera"
+      android:title="Exit Sprite" />
   </group>
 </menu>
