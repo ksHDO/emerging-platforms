@@ -8,4 +8,5 @@
   
     <!--Bundle Keys-->
     <string name="bundle_sprite_dimensions">sprite_dimensions</string>
+    <string name="bundle_draw_tool_name">tool_name</string>
 </resources>

@@ -8,7 +8,7 @@ using Android.Widget;
 using Spritist.Filters;
 using Spritist.Utilities;
 
-namespace Spritist
+namespace Spritist.Fragments
 {
     public class CreateSpriteDialogFragment : DialogFragment
     {

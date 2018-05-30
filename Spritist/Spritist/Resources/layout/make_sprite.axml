@@ -79,15 +79,16 @@
         android:layout_height="fill_parent">
         <Button
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_alignParentBottom="true"
             android:text="Draw!"
             android:id="@+id/drawButton" />
-        <AbsoluteLayout
+        <FrameLayout
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
-            android:layout_height="497.0dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
             android:id="@+id/make_sprite_main_layout">
             <ImageView
                 android:minWidth="400px"
@@ -108,6 +109,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cursorView" />
-        </AbsoluteLayout>
+        </FrameLayout>
     </RelativeLayout>
 </LinearLayout>

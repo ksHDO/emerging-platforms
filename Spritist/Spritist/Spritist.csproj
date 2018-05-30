@@ -62,9 +62,10 @@
     <Compile Include="Commands\CommandHistory.cs" />
     <Compile Include="Commands\DrawPathCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="CreateSpriteDialogFragment.cs" />
+    <Compile Include="Fragments\CreateSpriteDialogFragment.cs" />
     <Compile Include="DrawColor.cs" />
     <Compile Include="Filters\InputFilterClamp.cs" />
+    <Compile Include="Fragments\ToolSettingsDialogFragment.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MakeSpriteActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -293,6 +294,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\fill_bucket_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dialog_tool_settings.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

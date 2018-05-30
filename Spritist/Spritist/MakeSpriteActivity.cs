@@ -67,14 +67,17 @@ namespace Spritist
             w = dimensions[0];
             h = dimensions[1];
 
-            SetContentView(Resource.Layout.make_sprite);
+            //SetContentView(Resource.Layout.make_sprite);
+
+            SetContentView(Resource.Layout.activity_make_sprite); // Drawer layout
+
             FindViewById<Button>(Resource.Id.drawButton).GetLocationOnScreen(buttonLocs);
             //// Setup Drawer
-            //drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_make_sprite);
-            //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, null,
-            //    Resource.String.navigation_drawer_open,
-            //    Resource.String.navigation_drawer_close);
-            //drawerLayout.AddDrawerListener(toggle);
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_make_sprite);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, null,
+                Resource.String.navigation_drawer_open,
+                Resource.String.navigation_drawer_close);
+            drawerLayout.AddDrawerListener(toggle);
 
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
@@ -87,6 +90,8 @@ namespace Spritist
             tools[0] = new PencilTool(commandHistory, sourceBitmap);
             currentTool = tools[0];
 
+            FrameLayout spriteMainLayout = FindViewById<FrameLayout>(Resource.Id.make_sprite_main_layout);
+                spriteMainLayout.Touch += OnSpriteCanvasTouched;
 
             //SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
@@ -117,6 +122,11 @@ namespace Spritist
             SetupButtons();
         }
 
+        private void OnSpriteCanvasTouched(object sender, View.TouchEventArgs e)
+        {
+            OnCanvasTouchEvent(e.Event);
+        }
+
         private void SetupButtons()
         {
             ImageButton menuButton =
@@ -134,8 +144,18 @@ namespace Spritist
             ImageButton redoButton =
                 FindViewById<ImageButton>(Resource.Id.make_sprite_redo_button);
 
-            //menuButton.Click += (sender, args) =>
-            //    drawerLayout.OpenDrawer((int) GravityFlags.Left);
+            menuButton.Click += (sender, args) =>
+                drawerLayout.OpenDrawer((int)GravityFlags.Left);
+
+            pencilSettingsButton.Click += (sender, args) =>
+            {
+                ToolSettingsDialogFragment dialog =
+                    new ToolSettingsDialogFragment(OnPencilSettingsChanged);
+                var dialogArguments = new Bundle();
+                dialogArguments.PutString(GetString(Resource.String.bundle_draw_tool_name), "Pencil");
+                dialog.Arguments = dialogArguments;
+                dialog.Show(FragmentManager, "pencil_settings");
+            };
 
             undoButton.Click +=
                 (sender, args) =>
@@ -151,6 +171,11 @@ namespace Spritist
                 };
         }
 
+        private void OnPencilSettingsChanged(ToolSettingsDialogFragment.ToolSettingResult obj)
+        {
+            
+        }
+
         public void MoveCursor(float dx, float dy)
         {
             cursorView.SetX(cursorView.GetX() + dx);
@@ -161,13 +186,7 @@ namespace Spritist
 
         bool holding = false;
 
-        public override bool DispatchTouchEvent(MotionEvent ev)
-        {
-            
-            return base.DispatchTouchEvent(ev);
-        }
-
-        public override bool OnTouchEvent(MotionEvent e)
+        public bool OnCanvasTouchEvent(MotionEvent e)
         {
             float x = e.GetX();
             float y = e.GetY();
