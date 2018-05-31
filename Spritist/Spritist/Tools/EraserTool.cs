@@ -7,17 +7,18 @@ using Spritist;
 
 namespace Spritist.Tools
 {
-    public class PencilTool : Tool
+    public class EraserTool : Tool
     {
         private DrawPathCommand command;
 
-        public PencilTool(CommandHistory history, Bitmap bitmap) : base(history, bitmap)
+        public EraserTool(CommandHistory history, Bitmap bitmap) : base(history, bitmap)
         {
         }
 
         public override void OnDown(int x, int y)
         {
-            command = new DrawPathCommand(bitmap, DrawColor.CurrentColor, DrawColor.CurrentSize);
+            // Needs erase path command instead
+            command = new DrawPathCommand(bitmap, Color.White, DrawColor.CurrentSize);
             command.DrawOnPoint(x, y);
         }
 

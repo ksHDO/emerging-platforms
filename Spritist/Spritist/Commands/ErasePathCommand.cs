@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Android.Graphics;
 using Spritist.Utilities;
 
 namespace Spritist.Commands
 {
-    public class DrawPathCommand : ICommand
+    public class ErasePathCommand : ICommand
     {
 
         private class ColoredPoint
@@ -24,34 +25,28 @@ namespace Spritist.Commands
             public Point Point;
             public Color Color;
 
-            public readonly float AlphaFloat;
-
             public ColoredPoint(Point point, Color color)
             {
                 Point = point;
                 Color = color;
-                
             }
         }
 
         private readonly Bitmap bitmap;
-        private readonly Color paintColor;
-        private readonly float alphaFloat;
-        private readonly List<Point> points;
+        private readonly byte alpha;
+        private readonly List<ColoredPoint> points;
         private readonly List<ColoredPoint> overwrittenPoints;
         //private bool addedPixels;
         private readonly int diameterSize;
 
-        public DrawPathCommand(Bitmap bitmap, Color color, int diameterSize)
+        public ErasePathCommand(Bitmap bitmap, byte alpha, int diameterSize)
         {
             this.bitmap = bitmap;
-            this.paintColor = color;
-            alphaFloat = color.A / 255f;
+            this.alpha = alpha;
             this.diameterSize = diameterSize;
 
-            points = new List<Point>();
+            points = new List<ColoredPoint>();
             overwrittenPoints = new List<ColoredPoint>(bitmap.Width);
-
         }
 
         private void DrawPixel(int x, int y)
@@ -66,29 +61,16 @@ namespace Spritist.Commands
             //Could be avoided with a 2D array of Coloredpoints, skip checking everything in the list
             if (points.Where(p => (p.X == x && p.Y == y)).FirstOrDefault() == null)
             {
-                points.Add(point);
                 Color oldColor = new Color(bitmap.GetPixel(x, y));
-                
-                // Calculate adding transparency
-                float oldColorA = oldColor.A / 255f;
-                float drawColorA = alphaFloat;
 
-                float newAlpha = drawColorA + oldColorA * (1 - drawColorA);
-
-                Color colorToPaint = new Color(
-                    CalculateColor(paintColor.R, oldColor.R, drawColorA, oldColorA, newAlpha),
-                    CalculateColor(paintColor.G, oldColor.G, drawColorA, oldColorA, newAlpha),
-                    CalculateColor(paintColor.B, oldColor.B, drawColorA, oldColorA, newAlpha),
-                    (byte) (newAlpha * 255)
-                );
                 overwrittenPoints.Add(new ColoredPoint(point, oldColor));
-                bitmap.SetPixel(x, y, colorToPaint);
-            }
-        }
 
-        private byte CalculateColor(byte src, byte dest, float srcA, float destA, float newAlpha)
-        {
-            return (byte) (((src * srcA) + ((dest * destA) * (1 - srcA))) / newAlpha);
+                Color newColor = new Color(oldColor);
+                newColor.A = (byte) Math.Max(0, oldColor.A - alpha); 
+                points.Add(new ColoredPoint(point, newColor));
+
+                bitmap.SetPixel(x, y, newColor);
+            }
         }
 
         /// <summary>
@@ -124,7 +106,7 @@ namespace Spritist.Commands
             //{
                 foreach (var point in points)
                 {
-                    bitmap.SetPixel(point.X, point.Y, paintColor);
+                    bitmap.SetPixel(point.X, point.Y, point.Color);
                 }
             //}
         }

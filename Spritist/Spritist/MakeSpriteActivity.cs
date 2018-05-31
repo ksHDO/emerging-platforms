@@ -11,11 +11,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Spritist.Commands;
 using Spritist.Tools;
-
+using static Android.Views.View;
 
 namespace Spritist
 {
@@ -45,7 +46,11 @@ namespace Spritist
 
         private DrawerLayout drawerLayout;
         int[] buttonLocs = new int[3];
-        
+        Button drawButton;
+
+        float canvasX, canvasY = 0;
+        bool down = false;
+
         protected void SetUpImage(ref Canvas canvas, ref BitmapDrawable drawable, ref Bitmap bitmap, ImageView view, int w, int h)
         {
             bitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888);
@@ -67,11 +72,14 @@ namespace Spritist
             w = dimensions[0];
             h = dimensions[1];
 
+
             //SetContentView(Resource.Layout.make_sprite);
 
             SetContentView(Resource.Layout.activity_make_sprite); // Drawer layout
 
-            FindViewById<Button>(Resource.Id.drawButton).GetLocationOnScreen(buttonLocs);
+            drawButton = FindViewById<Button>(Resource.Id.drawButton);
+            drawButton.GetLocationOnScreen(buttonLocs);
+            drawButton.Touch += OnbuttonPush;
             //// Setup Drawer
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_make_sprite);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, null,
@@ -86,8 +94,11 @@ namespace Spritist
 
             commandHistory = new CommandHistory();
             //Seems redundant for now
-            tools = new Tool[1];
+            tools = new Tool[4];
             tools[0] = new PencilTool(commandHistory, sourceBitmap);
+            tools[1] = new EraserTool(commandHistory, sourceBitmap);
+            // tools[2] = new FillTool()
+            tools[3] = new ColorPickerTool(commandHistory, sourceBitmap);
             currentTool = tools[0];
 
             FrameLayout spriteMainLayout = FindViewById<FrameLayout>(Resource.Id.make_sprite_main_layout);
@@ -133,12 +144,12 @@ namespace Spritist
                 FindViewById<ImageButton>(Resource.Id.make_sprite_menu_button);
             ImageButton pencilButton =
                 FindViewById<ImageButton>(Resource.Id.make_sprite_pencil_button);
-            ImageButton pencilSettingsButton =
-                FindViewById<ImageButton>(Resource.Id.make_sprite_pencil_settings_button);
             ImageButton eraserButton =
                 FindViewById<ImageButton>(Resource.Id.make_sprite_eraser_button);
-            ImageButton eraserSettingsButton =
-                FindViewById<ImageButton>(Resource.Id.make_sprite_eraser_settings_button);
+            ImageButton settingsButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_settings_button);
+            ImageButton colorPickerButton =
+                FindViewById<ImageButton>(Resource.Id.make_sprite_dropper_button);
             ImageButton undoButton =
                 FindViewById<ImageButton>(Resource.Id.make_sprite_undo_button);
             ImageButton redoButton =
@@ -147,14 +158,15 @@ namespace Spritist
             menuButton.Click += (sender, args) =>
                 drawerLayout.OpenDrawer((int)GravityFlags.Left);
 
-            pencilSettingsButton.Click += (sender, args) =>
+            pencilButton.Click += (sender, args) => currentTool = tools[0];
+            eraserButton.Click += (sender, args) => currentTool = tools[1];
+            colorPickerButton.Click += (sender, args) => currentTool = tools[3];
+
+            settingsButton.Click += (sender, args) =>
             {
                 ToolSettingsDialogFragment dialog =
-                    new ToolSettingsDialogFragment(OnPencilSettingsChanged);
-                var dialogArguments = new Bundle();
-                dialogArguments.PutString(GetString(Resource.String.bundle_draw_tool_name), "Pencil");
-                dialog.Arguments = dialogArguments;
-                dialog.Show(FragmentManager, "pencil_settings");
+                    new ToolSettingsDialogFragment(DrawColor.CurrentSize, DrawColor.CurrentColor, OnToolSettingsChanged);
+                dialog.Show(FragmentManager, "tool_settings");
             };
 
             undoButton.Click +=
@@ -171,9 +183,10 @@ namespace Spritist
                 };
         }
 
-        private void OnPencilSettingsChanged(ToolSettingsDialogFragment.ToolSettingResult obj)
+        private void OnToolSettingsChanged(ToolSettingsDialogFragment.ToolSettingResult obj)
         {
-            
+            DrawColor.CurrentSize = obj.PixelSize;
+            DrawColor.CurrentColor = obj.Color;
         }
 
         public void MoveCursor(float dx, float dy)
@@ -185,6 +198,26 @@ namespace Spritist
 
 
         bool holding = false;
+
+
+        private void OnbuttonPush(object sender, TouchEventArgs e)
+        {
+            if (e.Event.Action == MotionEventActions.Down)
+            {
+                currentTool.OnDown((int)this.canvasX, (int)this.canvasY);
+                down = true;
+                Console.WriteLine("Button pushed");
+                Console.WriteLine("Canvas X, Y: " + canvasX.ToString() + "," + canvasY.ToString());
+                imageView.Invalidate();
+            }
+            else if (e.Event.Action == MotionEventActions.Up)
+            {
+                currentTool.OnUp((int)this.canvasX, (int)this.canvasY);
+                down = false;
+                Console.WriteLine("Button released");
+                imageView.Invalidate();
+            }
+        }
 
         public bool OnCanvasTouchEvent(MotionEvent e)
         {
@@ -201,62 +234,48 @@ namespace Spritist
             {
                 holding = false;
             }
-
-            
+       
             float cursorX = 0;
             float cursorY = 0;
+
             if (holding)
             {
-                int[] locs = new int[3];
-                cursorView.GetLocationOnScreen(locs);
-                
-                float dx = x - curX;
-                float dy = y - curY;
-                cursorX = locs[0] + dx;
-                cursorY = locs[1] + dy;
-                curX = x;
-                curY = y;
-                MoveCursor(dx, dy);
-                
-            }
-
-            // imageView.GetX
-            int[] position = new int[2];
-            imageView.GetLocationOnScreen(position);
-            float canvasX = cursorX - position[0];
-            float canvasY = cursorY - position[1];
-
-            canvasX = (canvasX / imageView.Width) * (float)w;
-            canvasY = (canvasY / imageView.Height) * (float)h;
-
-            if (e.Action == MotionEventActions.Down)
-            {
-                //drawPathCommand = new DrawPathCommand(sourceBitmap, Color.Blue);
-                currentTool.OnDown((int)canvasX, (int)canvasY);
-            }
-            else if (e.Action == MotionEventActions.Up)
-            {
-                //commandHistory.Perform(drawPathCommand);
-                currentTool.OnUp((int)canvasX, (int)canvasY);
-            }
-
-            if (canvasX >= 0.0f && canvasX < (float)w && canvasY >= 0.0f && canvasY < (float)h)
-            {
-                //sourceBitmap.SetPixel((int)canvasX, (int)canvasY, Color.Black);
-                //canvas.DrawPoint(canvasX, canvasY, new Paint()
-                //{
-                //    Color = Color.Blue
-                //});
-                if (e.Action == MotionEventActions.Move)
+                if (y > buttonLocs[1])
                 {
-                    //drawPathCommand.AddPixel((int) canvasX, (int) canvasY);
-                    currentTool.OnMove((int)canvasX, (int)canvasY);
-                }
 
-                imageView.Invalidate();
-            }
-            
-            
+                    int[] locs = new int[3];
+                    cursorView.GetLocationOnScreen(locs);
+                    float dx = x - curX;
+                    float dy = y - curY;
+                    cursorX = locs[0] + dx;
+                    cursorY = locs[1] + dy;
+                    curX = x;
+                    curY = y;
+                    MoveCursor(dx, dy);
+
+
+                    int[] position = new int[3];
+                    imageView.GetLocationOnScreen(position);
+                    float canvasX = cursorX - position[0];
+                    float canvasY = cursorY - position[1];
+
+                    canvasX = (canvasX / imageView.Width) * (float)w;
+                    canvasY = (canvasY / imageView.Height) * (float)h;
+                    this.canvasX = canvasX;
+                    this.canvasY = canvasY;
+
+                    if (down && canvasX >= 0.0f && canvasX < (float)w && canvasY >= 0.0f && canvasY < (float)h)
+                    {
+
+                        if (e.Action == MotionEventActions.Move)
+                        {
+                            currentTool.OnMove((int)canvasX, (int)canvasY);
+                        }
+
+                        imageView.Invalidate();
+                    }
+                }
+            }     
             return base.OnTouchEvent(e);
         }
     }
