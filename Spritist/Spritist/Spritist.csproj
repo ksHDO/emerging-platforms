@@ -31,9 +31,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <Debugger>Xamarin</Debugger>
     <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
@@ -58,10 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AliasDrawableWrapper.cs" />
-    <Compile Include="Commands\CanvasCommand.cs" />
+    <Compile Include="Commands\BitmapCommand.cs" />
+    <Compile Include="Commands\ColoredPoint.cs" />
     <Compile Include="Commands\CommandHistory.cs" />
     <Compile Include="Commands\ErasePathCommand.cs" />
     <Compile Include="Commands\DrawPathCommand.cs" />
+    <Compile Include="Commands\FillCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Fragments\CreateSpriteDialogFragment.cs" />
     <Compile Include="DrawColor.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="TestView.cs" />
     <Compile Include="Tools\ColorPickerTool.cs" />
     <Compile Include="Tools\EraserTool.cs" />
+    <Compile Include="Tools\FillTool.cs" />
     <Compile Include="Tools\PencilTool.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Utilities\BitmapUtils.cs" />

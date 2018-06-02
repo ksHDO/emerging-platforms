@@ -8,35 +8,10 @@ namespace Spritist.Commands
 {
     public class ErasePathCommand : ICommand
     {
-
-        private class ColoredPoint
-        {
-            public int X
-            {
-                get => Point.X;
-                set => Point.X = value;
-            }
-            public int Y
-            {
-                get => Point.Y;
-                set => Point.Y = value;
-            }
-
-            public Point Point;
-            public Color Color;
-
-            public ColoredPoint(Point point, Color color)
-            {
-                Point = point;
-                Color = color;
-            }
-        }
-
         private readonly Bitmap bitmap;
         private readonly byte alpha;
         private readonly List<ColoredPoint> points;
         private readonly List<ColoredPoint> overwrittenPoints;
-        //private bool addedPixels;
         private readonly int diameterSize;
 
         public ErasePathCommand(Bitmap bitmap, byte alpha, int diameterSize)
@@ -58,8 +33,7 @@ namespace Spritist.Commands
             //addedPixels = true;
 
             Point point = new Point(x, y);
-            //Could be avoided with a 2D array of Coloredpoints, skip checking everything in the list
-            if (points.Where(p => (p.X == x && p.Y == y)).FirstOrDefault() == null)
+            if (points.FirstOrDefault(p => (p.X == x && p.Y == y)) == null)
             {
                 Color oldColor = new Color(bitmap.GetPixel(x, y));
 
@@ -98,17 +72,10 @@ namespace Spritist.Commands
 
         public void Redo()
         {
-            //if (addedPixels)
-            //{
-            //    addedPixels = false;
-            //}
-            //else
-            //{
-                foreach (var point in points)
-                {
-                    bitmap.SetPixel(point.X, point.Y, point.Color);
-                }
-            //}
+            foreach (var point in points)
+            {
+                bitmap.SetPixel(point.X, point.Y, point.Color);
+            }
         }
 
         public void Undo()

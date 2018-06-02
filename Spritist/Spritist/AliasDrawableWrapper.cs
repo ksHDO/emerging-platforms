@@ -15,6 +15,7 @@ namespace Spritist
 
         public AliasDrawableWrapper(Drawable dr) : base(dr)
         {
+            
         }
 
         public override void Draw(Canvas canvas)
