@@ -2,27 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Amazon;
+using Amazon.Runtime;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Spritist.Amazon;
 using Spritist.Commands;
 using Spritist.Tools;
+using Spritist.Utilities;
 using static Android.Views.View;
 
 namespace Spritist
 {
     [Activity(Label = "MakeSpriteActivity")]
-    public class MakeSpriteActivity : Activity
+    public class MakeSpriteActivity : Activity, NavigationView.IOnNavigationItemSelectedListener
     {
+        private string spriteName;
         int w = 16;
         int h = 16;
         Canvas canvas;
@@ -66,8 +74,9 @@ namespace Spritist
         {
             base.OnCreate(savedInstanceState);
 
-
-            int[] dimensions = Intent.Extras.GetIntArray(
+            Bundle extras = Intent.Extras;
+            spriteName = extras.GetString(GetString(Resource.String.bundle_sprite_name));
+            int[] dimensions = extras.GetIntArray(
                 GetString(Resource.String.bundle_sprite_dimensions));
 
             w = dimensions[0];
@@ -87,6 +96,9 @@ namespace Spritist
                 Resource.String.navigation_drawer_open,
                 Resource.String.navigation_drawer_close);
             drawerLayout.AddDrawerListener(toggle);
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view_create_sprite);
+            navigationView.SetNavigationItemSelectedListener(this);
+
 
             canvasView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
@@ -109,33 +121,16 @@ namespace Spritist
             SetupSideImageViews(Resource.Id.imageViewTop, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewRight, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewBottom, sourceBitmap);
-            //SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
-            //sourceBitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888); //Temporary width height
-            //mainSpriteDisplay = new BitmapDrawable(sourceBitmap);
-            //canvas = new Canvas(sourceBitmap);
-
-            //DrawableWrapper wr = new AliasDrawableWrapper(mainSpriteDisplay);
-            //imageView.SetImageDrawable(wr);
 
             canvas.DrawARGB(255, 255, 0, 255);
-            //cursorCanvas.DrawARGB(30, 200, 30, 255);
-
-            canvas.DrawLine(0, 0, 25, 25, new Paint()
-            {
-                Color = Color.Yellow
-            });
-            canvas.DrawPoint(2, 2, new Paint()
-            {
-                Color = Color.Red
-            });
 
             curX = cursorView.GetX();
             curY = cursorView.GetY();
 
-
-
             SetupButtons();
+
+            
         }
 
         private void SetupSideImageViews(int id, Bitmap srcBitmap)
@@ -322,6 +317,41 @@ namespace Spritist
                 }
             }     
             return base.OnTouchEvent(e);
+        }
+
+        public bool OnNavigationItemSelected(IMenuItem menuItem)
+        {
+            int id = menuItem.ItemId;
+
+            if (id == Resource.Id.nav_upload)
+            {
+                UploadImage();
+            }
+            else if (id == Resource.Id.nav_exit_sprite)
+            {
+                this.Finish();
+            }
+
+            drawerLayout.CloseDrawer(GravityCompat.Start);
+            return true;
+        }
+
+        private static void UploadImage()
+        {
+            // aws upload
+            var services = AmazonServices.Instance;
+            var client = services.Client;
+
+            // pack things into a stream
+
+
+            PutObjectRequest request = new PutObjectRequest()
+            {
+                BucketName = AmazonServices.BucketName,
+                ContentType = AmazonServicesContentType.Binary
+            };
+
+            client.PutObjectAsync(request);
         }
     }
 }
