@@ -76,32 +76,89 @@
             android:layout_alignParentBottom="true"
             android:text="Draw!"
             android:id="@+id/drawButton" />
-        <FrameLayout
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/make_sprite_main_layout">
-            <ImageView
-                android:minWidth="400px"
-                android:maxWidth="400px"
-                android:minHeight="400px"
-                android:maxHeight="400px"
-                android:layout_marginLeft="50px"
-                android:layout_marginTop="50px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView" />
-            <ImageView
-                android:minWidth="16px"
-                android:maxWidth="16px"
-                android:minHeight="16px"
-                android:maxHeight="16px"
-                android:src="@drawable/Pencil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cursorView" />
-        </FrameLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/drawButton">
+            <FrameLayout
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:clipChildren="true"
+                android:id="@+id/make_sprite_main_layout">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    <ImageView
+                        android:minWidth="150dp"
+                        android:maxWidth="150dp"
+                        android:minHeight="150dp"
+                        android:maxHeight="150dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/imageView" />
+                    <ImageView
+                        android:minWidth="150dp"
+                        android:maxWidth="150dp"
+                        android:minHeight="150dp"
+                        android:maxHeight="150dp"
+                        android:scaleType="centerCrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/imageView"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="75dp"
+                        android:id="@+id/imageViewLeft" />
+                    <ImageView
+                        android:minWidth="150dp"
+                        android:maxWidth="150dp"
+                        android:minHeight="150dp"
+                        android:maxHeight="150dp"
+                        android:scaleType="centerCrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imageView"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="75dp"
+                        android:id="@+id/imageViewRight" />
+                    <ImageView
+                        android:minWidth="150dp"
+                        android:maxWidth="150dp"
+                        android:minHeight="150dp"
+                        android:maxHeight="150dp"
+                        android:scaleType="centerCrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/imageView"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="75dp"
+                        android:id="@+id/imageViewTop" />
+                    <ImageView
+                        android:minWidth="150dp"
+                        android:maxWidth="150dp"
+                        android:minHeight="150dp"
+                        android:maxHeight="150dp"
+                        android:scaleType="centerCrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imageView"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="75dp"
+                        android:id="@+id/imageViewBottom" />
+                </RelativeLayout>
+                <ImageView
+                    android:minWidth="16px"
+                    android:maxWidth="16px"
+                    android:minHeight="16px"
+                    android:maxHeight="16px"
+                    android:src="@drawable/Pencil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cursorView" />
+            </FrameLayout>
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -104,6 +104,11 @@ namespace Spritist
             FrameLayout spriteMainLayout = FindViewById<FrameLayout>(Resource.Id.make_sprite_main_layout);
                 spriteMainLayout.Touch += OnSpriteCanvasTouched;
 
+
+            SetupSideImageViews(Resource.Id.imageViewLeft, sourceBitmap);
+            SetupSideImageViews(Resource.Id.imageViewTop, sourceBitmap);
+            SetupSideImageViews(Resource.Id.imageViewRight, sourceBitmap);
+            SetupSideImageViews(Resource.Id.imageViewBottom, sourceBitmap);
             //SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
             //sourceBitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888); //Temporary width height
@@ -131,6 +136,14 @@ namespace Spritist
 
 
             SetupButtons();
+        }
+
+        private void SetupSideImageViews(int id, Bitmap srcBitmap)
+        {
+            ImageView view = FindViewById<ImageView>(id);
+            var             drawable = new BitmapDrawable(srcBitmap);
+            DrawableWrapper wr       = new AliasDrawableWrapper(drawable);
+            view.SetImageDrawable(wr);
         }
 
         private void OnSpriteCanvasTouched(object sender, View.TouchEventArgs e)
@@ -216,10 +229,7 @@ namespace Spritist
             cursorView.Invalidate();
         }
 
-
         bool holding = false;
-
-
         private void OnbuttonPush(object sender, TouchEventArgs e)
         {
             if (e.Event.Action == MotionEventActions.Down)
@@ -273,6 +283,11 @@ namespace Spritist
                     curY = y;
                     MoveCursor(dx, dy);
 
+                    if (cursorView.GetX() < imageView.GetX()) cursorView.SetX(imageView.GetX());
+                    else if (cursorView.GetX() > imageView.GetX() + imageView.Width) cursorView.SetX(imageView.GetX() + imageView.Width);
+                    if (cursorView.GetY() < imageView.GetY()) cursorView.SetY(imageView.GetY());
+                    else if (cursorView.GetY() > imageView.GetY() + imageView.Height) cursorView.SetY(imageView.GetY() + imageView.Height);
+                    cursorView.Invalidate();
 
                     int[] position = new int[3];
                     imageView.GetLocationOnScreen(position);
