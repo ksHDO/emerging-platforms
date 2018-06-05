@@ -28,7 +28,8 @@ namespace Spritist
         Canvas canvas;
         BitmapDrawable mainSpriteDisplay;
         Bitmap sourceBitmap;
-        ImageView imageView;
+        ImageView canvasView;
+        List<ImageView> tiledViews = new List<ImageView>(4);
 
         Canvas cursorCanvas;
         BitmapDrawable cursorSpriteDisplay;
@@ -87,10 +88,10 @@ namespace Spritist
                 Resource.String.navigation_drawer_close);
             drawerLayout.AddDrawerListener(toggle);
 
-            imageView = FindViewById<ImageView>(Resource.Id.imageView);
+            canvasView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
 
-            SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, imageView, w, h);
+            SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, canvasView, w, h);
 
             commandHistory = new CommandHistory();
             //Seems redundant for now
@@ -103,7 +104,6 @@ namespace Spritist
 
             FrameLayout spriteMainLayout = FindViewById<FrameLayout>(Resource.Id.make_sprite_main_layout);
                 spriteMainLayout.Touch += OnSpriteCanvasTouched;
-
 
             SetupSideImageViews(Resource.Id.imageViewLeft, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewTop, sourceBitmap);
@@ -140,10 +140,11 @@ namespace Spritist
 
         private void SetupSideImageViews(int id, Bitmap srcBitmap)
         {
-            ImageView view = FindViewById<ImageView>(id);
-            var             drawable = new BitmapDrawable(srcBitmap);
+            ImageView       view     = FindViewById<ImageView>(id);
+            BitmapDrawable  drawable = new BitmapDrawable(srcBitmap);
             DrawableWrapper wr       = new AliasDrawableWrapper(drawable);
             view.SetImageDrawable(wr);
+            tiledViews.Add(view);
         }
 
         private void OnSpriteCanvasTouched(object sender, View.TouchEventArgs e)
@@ -206,13 +207,13 @@ namespace Spritist
                 (sender, args) =>
                 {
                     commandHistory.Undo();
-                    imageView.Invalidate();
+                    InvalidateImageViews();
                 };
             redoButton.Click +=
                 (sender, args) =>
                 {
                     commandHistory.Redo();
-                    imageView.Invalidate();
+                    InvalidateImageViews();
                 };
         }
 
@@ -229,6 +230,15 @@ namespace Spritist
             cursorView.Invalidate();
         }
 
+        public void InvalidateImageViews()
+        {
+            canvasView.Invalidate();
+            foreach (ImageView tiledView in tiledViews)
+            {
+                tiledView.Invalidate();
+            }
+        }
+
         bool holding = false;
         private void OnbuttonPush(object sender, TouchEventArgs e)
         {
@@ -238,14 +248,14 @@ namespace Spritist
                 down = true;
                 Console.WriteLine("Button pushed");
                 Console.WriteLine("Canvas X, Y: " + canvasX.ToString() + "," + canvasY.ToString());
-                imageView.Invalidate();
+                InvalidateImageViews();
             }
             else if (e.Event.Action == MotionEventActions.Up)
             {
                 currentTool.OnUp((int)this.canvasX, (int)this.canvasY);
                 down = false;
                 Console.WriteLine("Button released");
-                imageView.Invalidate();
+                InvalidateImageViews();
             }
         }
 
@@ -283,19 +293,19 @@ namespace Spritist
                     curY = y;
                     MoveCursor(dx, dy);
 
-                    if (cursorView.GetX() < imageView.GetX()) cursorView.SetX(imageView.GetX());
-                    else if (cursorView.GetX() > imageView.GetX() + imageView.Width) cursorView.SetX(imageView.GetX() + imageView.Width);
-                    if (cursorView.GetY() < imageView.GetY()) cursorView.SetY(imageView.GetY());
-                    else if (cursorView.GetY() > imageView.GetY() + imageView.Height) cursorView.SetY(imageView.GetY() + imageView.Height);
+                    if (cursorView.GetX() < canvasView.GetX() + 3.0f) cursorView.SetX(canvasView.GetX()+ 3.0f);
+                    else if (cursorView.GetX() > canvasView.GetX() + canvasView.Width - 3.0f) cursorView.SetX(canvasView.GetX() + (canvasView.Width- 3.0f));
+                    if (cursorView.GetY() < canvasView.GetY() + 3.0f) cursorView.SetY(canvasView.GetY()+3.0f);
+                    else if (cursorView.GetY() > canvasView.GetY() + canvasView.Height - 3.0f) cursorView.SetY(canvasView.GetY() + (canvasView.Height- 3.0f));
                     cursorView.Invalidate();
 
                     int[] position = new int[3];
-                    imageView.GetLocationOnScreen(position);
+                    canvasView.GetLocationOnScreen(position);
                     float canvasX = cursorX - position[0];
                     float canvasY = cursorY - position[1];
 
-                    canvasX = (canvasX / imageView.Width) * (float)w;
-                    canvasY = (canvasY / imageView.Height) * (float)h;
+                    canvasX = (canvasX / canvasView.Width) * (float)w;
+                    canvasY = (canvasY / canvasView.Height) * (float)h;
                     this.canvasX = canvasX;
                     this.canvasY = canvasY;
 
@@ -307,7 +317,7 @@ namespace Spritist
                             currentTool.OnMove((int)canvasX, (int)canvasY);
                         }
 
-                        imageView.Invalidate();
+                        InvalidateImageViews();
                     }
                 }
             }     
