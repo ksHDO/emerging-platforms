@@ -12,6 +12,7 @@ namespace Spritist.Fragments
 {
     public class CreateSpriteDialogFragment : DialogFragment
     {
+        private EditText spriteNameText;
         private TextView xView;
         private TextView yView;
 
@@ -29,6 +30,7 @@ namespace Spritist.Fragments
                 .SetNegativeButton("Cancel",
                     OnCancelButtonClicked);
 
+            
             xView = view.FindViewById<TextView>(Resource.Id.dialog_create_sprite_x);
             yView = view.FindViewById<TextView>(Resource.Id.dialog_create_sprite_y);
             xView.SetFilters(new IInputFilter[]{new InputFilterClamp(1, 64) });
@@ -45,6 +47,7 @@ namespace Spritist.Fragments
         private void OnCreateButtonClicked(object sender, DialogClickEventArgs e)
         {
             Dialog dialog = (Dialog) sender;
+            spriteNameText = dialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_sprite_name);
             xView = dialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_x);
             yView = dialog.FindViewById<EditText>(Resource.Id.dialog_create_sprite_y);
 
@@ -52,6 +55,11 @@ namespace Spritist.Fragments
             intent.SetClass(Activity, typeof(MakeSpriteActivity));
             Bundle bundle = new Bundle();
 
+            string spriteName = "Sprite";
+            if (!string.IsNullOrWhiteSpace(spriteNameText.Text))
+            {
+                spriteName = spriteNameText.Text;
+            }
             int xDimension = 16, yDimension = 16;
             if (!string.IsNullOrWhiteSpace(xView.Text))
             {
@@ -64,6 +72,8 @@ namespace Spritist.Fragments
                 int y = int.Parse((yView.Text));
                 yDimension = y;
             }
+
+            bundle.PutString(GetString(Resource.String.bundle_sprite_name), spriteName);
 
             bundle.PutIntArray(GetString(Resource.String.bundle_sprite_dimensions), new[]
             {
