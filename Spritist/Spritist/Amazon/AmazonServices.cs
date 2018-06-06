@@ -32,7 +32,6 @@ namespace Spritist.Amazon
                 AccessKey = keys.AccessKey;
                 SecretKey = keys.SecretKey;
             }
-
             AWSCredentials credentials = new BasicAWSCredentials(AccessKey, SecretKey);
             Client = new AmazonS3Client(credentials, BucketRegion);
         }
@@ -62,7 +61,6 @@ namespace Spritist.Amazon
 
 
         private static AmazonServices _instance;
-
 
         public static AmazonServices Instance(AssetManager assets)
         {

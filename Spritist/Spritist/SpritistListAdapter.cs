@@ -16,23 +16,14 @@ using Object = Java.Lang.Object;
 
 namespace Spritist
 {
-    public class SpritistListAdapter : ArrayAdapter<string>
+    public class SpritistListAdapter : ArrayAdapter<SpritistData>
     {
 
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            string key = GetItem(position);
+            SpritistData data = GetItem(position);
 
-            string file;
-            var client = AmazonServices.Instance.Client;
-            using (var response = client.GetObjectAsync(AmazonServices.BucketName, key).Result)
-            using ( var reader = new StreamReader(response.ResponseStream))
-            {
-                file = reader.ReadToEnd();
-            }
-
-            var data = JsonConvert.DeserializeObject<SpritistData>(file);
 
             if (convertView == null)
             {
@@ -53,7 +44,7 @@ namespace Spritist
             // return base.GetView(position, convertView, parent);
         }
 
-        public SpritistListAdapter(Context context, IEnumerable<string> objects) : base(context, 0, objects.ToArray())
+        public SpritistListAdapter(Context context, IEnumerable<SpritistData> objects) : base(context, 0, objects.ToArray())
         {
 
         }
@@ -70,19 +61,19 @@ namespace Spritist
         {
         }
 
-        public SpritistListAdapter(Context context, int textViewResourceId, string[] objects) : base(context, textViewResourceId, objects)
+        public SpritistListAdapter(Context context, int textViewResourceId, SpritistData[] objects) : base(context, textViewResourceId, objects)
         {
         }
 
-        public SpritistListAdapter(Context context, int resource, int textViewResourceId, string[] objects) : base(context, resource, textViewResourceId, objects)
+        public SpritistListAdapter(Context context, int resource, int textViewResourceId, SpritistData[] objects) : base(context, resource, textViewResourceId, objects)
         {
         }
 
-        public SpritistListAdapter(Context context, int textViewResourceId, IList<string> objects) : base(context, textViewResourceId, objects)
+        public SpritistListAdapter(Context context, int textViewResourceId, IList<SpritistData> objects) : base(context, textViewResourceId, objects)
         {
         }
 
-        public SpritistListAdapter(Context context, int resource, int textViewResourceId, IList<string> objects) : base(context, resource, textViewResourceId, objects)
+        public SpritistListAdapter(Context context, int resource, int textViewResourceId, IList<SpritistData> objects) : base(context, resource, textViewResourceId, objects)
         {
         }
     }
