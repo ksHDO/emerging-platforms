@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Android;
 using Android.App;
 using Android.OS;
@@ -7,6 +11,8 @@ using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
+using Android.Widget;
+using Spritist.Amazon;
 using Spritist.Fragments;
 
 namespace Spritist
@@ -14,6 +20,8 @@ namespace Spritist
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+        private ListView listView;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {     
             base.OnCreate(savedInstanceState);
@@ -31,6 +39,10 @@ namespace Spritist
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
+
+            listView = FindViewById<ListView>(Resource.Id.content_main_list);
+
+            RetrieveListOfObjects();
         }
 
         public override void OnBackPressed()
@@ -106,6 +118,19 @@ namespace Spritist
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
             return true;
+        }
+
+        public void RetrieveListOfObjects()
+        {
+            AmazonS3Client client = AmazonServices.Instance.Client;
+            ListObjectsRequest listRequest = new ListObjectsRequest()
+            {
+                BucketName = AmazonServices.BucketName
+            };
+            ListObjectsResponse listResponse = client.ListObjectsAsync(listRequest).Result;
+            
+            var keys = listResponse.S3Objects.Select(o => o.Key);
+            listView.Adapter = new SpritistListAdapter(this, keys);
         }
     }
 }

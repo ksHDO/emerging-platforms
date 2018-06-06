@@ -71,8 +71,7 @@ namespace Spritist
             drawable = new BitmapDrawable(bitmap);
             canvas = new Canvas(bitmap);
             DrawableWrapper wr = new AliasDrawableWrapper(drawable);
-            view.SetImageDrawable(wr);
-            
+            view.SetImageDrawable(wr);          
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -86,7 +85,6 @@ namespace Spritist
 
             w = dimensions[0];
             h = dimensions[1];
-
 
             //SetContentView(Resource.Layout.make_sprite);
 
@@ -103,7 +101,6 @@ namespace Spritist
             drawerLayout.AddDrawerListener(toggle);
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view_create_sprite);
             navigationView.SetNavigationItemSelectedListener(this);
-
 
             canvasView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
@@ -127,15 +124,12 @@ namespace Spritist
             SetupSideImageViews(Resource.Id.imageViewRight, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewBottom, sourceBitmap);
 
-
             canvas.DrawARGB(255, 255, 0, 255);
 
             curX = cursorView.GetX();
             curY = cursorView.GetY();
 
-            SetupButtons();
-
-            
+            SetupButtons();            
         }
 
         private void SetupSideImageViews(int id, Bitmap srcBitmap)
@@ -341,7 +335,7 @@ namespace Spritist
             return true;
         }
 
-        private void UploadImage()
+        private async void UploadImage()
         {
             // aws upload
             var services = AmazonServices.Instance;
@@ -361,8 +355,9 @@ namespace Spritist
             };
             request.ContentType = AmazonServicesContentType.Json;
 
-            PutObjectResponse response = client.PutObjectAsync(request).Result;
-            Log.Info("Spritist.MakeSpriteActivity", "Put data");
+            await client.PutObjectAsync(request);
+
+            
 
             //using (MemoryStream ms = new MemoryStream())
             //using (StreamWriter streamWriter = new StreamWriter(ms))
