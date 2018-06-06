@@ -53,7 +53,7 @@ namespace Spritist.Amazon
         {
             get
             {
-                if (_instance != null)
+                if (_instance == null)
                     _instance = new AmazonServices();
                 return _instance;
             }
