@@ -344,7 +344,7 @@ namespace Spritist
         private void UploadImage()
         {
             // aws upload
-            var services = AmazonServices.Instance;
+            var services = AmazonServices.Instance(Assets);
             var client = services.Client;
 
             // pack things into a stream
