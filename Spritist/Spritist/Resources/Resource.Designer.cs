@@ -26,6 +26,10 @@ namespace Spritist
 		
 		public static void UpdateIdValues()
 		{
+			global::PCLCrypto.Resource.String.ApplicationName = global::Spritist.Resource.String.ApplicationName;
+			global::PCLCrypto.Resource.String.Hello = global::Spritist.Resource.String.Hello;
+			global::PCLStorage.Resource.String.ApplicationName = global::Spritist.Resource.String.ApplicationName;
+			global::PCLStorage.Resource.String.Hello = global::Spritist.Resource.String.Hello;
 		}
 		
 		public partial class Animation
@@ -2312,8 +2316,8 @@ namespace Spritist
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0800a9
-			public const int action0 = 2131230889;
+			// aapt resource value: 0x7f0800aa
+			public const int action0 = 2131230890;
 			
 			// aapt resource value: 0x7f080064
 			public const int action_bar = 2131230820;
@@ -2336,17 +2340,17 @@ namespace Spritist
 			// aapt resource value: 0x7f080041
 			public const int action_bar_title = 2131230785;
 			
-			// aapt resource value: 0x7f0800a6
-			public const int action_container = 2131230886;
+			// aapt resource value: 0x7f0800a7
+			public const int action_container = 2131230887;
 			
 			// aapt resource value: 0x7f080065
 			public const int action_context_bar = 2131230821;
 			
-			// aapt resource value: 0x7f0800ad
-			public const int action_divider = 2131230893;
+			// aapt resource value: 0x7f0800ae
+			public const int action_divider = 2131230894;
 			
-			// aapt resource value: 0x7f0800a7
-			public const int action_image = 2131230887;
+			// aapt resource value: 0x7f0800a8
+			public const int action_image = 2131230888;
 			
 			// aapt resource value: 0x7f080003
 			public const int action_menu_divider = 2131230723;
@@ -2363,14 +2367,14 @@ namespace Spritist
 			// aapt resource value: 0x7f080043
 			public const int action_mode_close_button = 2131230787;
 			
-			// aapt resource value: 0x7f0800c8
-			public const int action_settings = 2131230920;
+			// aapt resource value: 0x7f0800c9
+			public const int action_settings = 2131230921;
 			
-			// aapt resource value: 0x7f0800a8
-			public const int action_text = 2131230888;
+			// aapt resource value: 0x7f0800a9
+			public const int action_text = 2131230889;
 			
-			// aapt resource value: 0x7f0800b6
-			public const int actions = 2131230902;
+			// aapt resource value: 0x7f0800b7
+			public const int actions = 2131230903;
 			
 			// aapt resource value: 0x7f080044
 			public const int activity_chooser_view_content = 2131230788;
@@ -2399,8 +2403,8 @@ namespace Spritist
 			// aapt resource value: 0x7f08004b
 			public const int buttonPanel = 2131230795;
 			
-			// aapt resource value: 0x7f0800aa
-			public const int cancel_action = 2131230890;
+			// aapt resource value: 0x7f0800ab
+			public const int cancel_action = 2131230891;
 			
 			// aapt resource value: 0x7f080030
 			public const int center = 2131230768;
@@ -2414,8 +2418,8 @@ namespace Spritist
 			// aapt resource value: 0x7f08005b
 			public const int checkbox = 2131230811;
 			
-			// aapt resource value: 0x7f0800b2
-			public const int chronometer = 2131230898;
+			// aapt resource value: 0x7f0800b3
+			public const int chronometer = 2131230899;
 			
 			// aapt resource value: 0x7f080039
 			public const int clip_horizontal = 2131230777;
@@ -2435,8 +2439,8 @@ namespace Spritist
 			// aapt resource value: 0x7f08007c
 			public const int coordinator = 2131230844;
 			
-			// aapt resource value: 0x7f0800a4
-			public const int cursorView = 2131230884;
+			// aapt resource value: 0x7f0800a5
+			public const int cursorView = 2131230885;
 			
 			// aapt resource value: 0x7f080055
 			public const int custom = 2131230805;
@@ -2468,50 +2472,53 @@ namespace Spritist
 			// aapt resource value: 0x7f080087
 			public const int dialog_create_sprite = 2131230855;
 			
-			// aapt resource value: 0x7f080088
-			public const int dialog_create_sprite_dimensions = 2131230856;
-			
 			// aapt resource value: 0x7f080089
-			public const int dialog_create_sprite_x = 2131230857;
+			public const int dialog_create_sprite_dimensions = 2131230857;
+			
+			// aapt resource value: 0x7f080088
+			public const int dialog_create_sprite_sprite_name = 2131230856;
 			
 			// aapt resource value: 0x7f08008a
-			public const int dialog_create_sprite_y = 2131230858;
-			
-			// aapt resource value: 0x7f080093
-			public const int dialog_tool_settings_color_a = 2131230867;
-			
-			// aapt resource value: 0x7f080094
-			public const int dialog_tool_settings_color_a_text = 2131230868;
-			
-			// aapt resource value: 0x7f080091
-			public const int dialog_tool_settings_color_b = 2131230865;
-			
-			// aapt resource value: 0x7f080092
-			public const int dialog_tool_settings_color_b_text = 2131230866;
-			
-			// aapt resource value: 0x7f08008f
-			public const int dialog_tool_settings_color_g = 2131230863;
-			
-			// aapt resource value: 0x7f080090
-			public const int dialog_tool_settings_color_g_text = 2131230864;
-			
-			// aapt resource value: 0x7f08008d
-			public const int dialog_tool_settings_color_r = 2131230861;
-			
-			// aapt resource value: 0x7f08008e
-			public const int dialog_tool_settings_color_r_text = 2131230862;
+			public const int dialog_create_sprite_x = 2131230858;
 			
 			// aapt resource value: 0x7f08008b
-			public const int dialog_tool_settings_pixel_size = 2131230859;
+			public const int dialog_create_sprite_y = 2131230859;
+			
+			// aapt resource value: 0x7f080094
+			public const int dialog_tool_settings_color_a = 2131230868;
+			
+			// aapt resource value: 0x7f080095
+			public const int dialog_tool_settings_color_a_text = 2131230869;
+			
+			// aapt resource value: 0x7f080092
+			public const int dialog_tool_settings_color_b = 2131230866;
+			
+			// aapt resource value: 0x7f080093
+			public const int dialog_tool_settings_color_b_text = 2131230867;
+			
+			// aapt resource value: 0x7f080090
+			public const int dialog_tool_settings_color_g = 2131230864;
+			
+			// aapt resource value: 0x7f080091
+			public const int dialog_tool_settings_color_g_text = 2131230865;
+			
+			// aapt resource value: 0x7f08008e
+			public const int dialog_tool_settings_color_r = 2131230862;
+			
+			// aapt resource value: 0x7f08008f
+			public const int dialog_tool_settings_color_r_text = 2131230863;
 			
 			// aapt resource value: 0x7f08008c
-			public const int dialog_tool_settings_pixel_size_text = 2131230860;
+			public const int dialog_tool_settings_pixel_size = 2131230860;
+			
+			// aapt resource value: 0x7f08008d
+			public const int dialog_tool_settings_pixel_size_text = 2131230861;
 			
 			// aapt resource value: 0x7f080012
 			public const int disableHome = 2131230738;
 			
-			// aapt resource value: 0x7f08009d
-			public const int drawButton = 2131230877;
+			// aapt resource value: 0x7f08009e
+			public const int drawButton = 2131230878;
 			
 			// aapt resource value: 0x7f080073
 			public const int drawer_layout = 2131230835;
@@ -2525,8 +2532,8 @@ namespace Spritist
 			// aapt resource value: 0x7f080021
 			public const int end = 2131230753;
 			
-			// aapt resource value: 0x7f0800bc
-			public const int end_padder = 2131230908;
+			// aapt resource value: 0x7f0800bd
+			public const int end_padder = 2131230909;
 			
 			// aapt resource value: 0x7f08002a
 			public const int enterAlways = 2131230762;
@@ -2567,8 +2574,8 @@ namespace Spritist
 			// aapt resource value: 0x7f080049
 			public const int icon = 2131230793;
 			
-			// aapt resource value: 0x7f0800b7
-			public const int icon_group = 2131230903;
+			// aapt resource value: 0x7f0800b8
+			public const int icon_group = 2131230904;
 			
 			// aapt resource value: 0x7f080025
 			public const int ifRoom = 2131230757;
@@ -2576,23 +2583,23 @@ namespace Spritist
 			// aapt resource value: 0x7f080046
 			public const int image = 2131230790;
 			
-			// aapt resource value: 0x7f08009f
-			public const int imageView = 2131230879;
-			
-			// aapt resource value: 0x7f0800a3
-			public const int imageViewBottom = 2131230883;
-			
 			// aapt resource value: 0x7f0800a0
-			public const int imageViewLeft = 2131230880;
+			public const int imageView = 2131230880;
+			
+			// aapt resource value: 0x7f0800a4
+			public const int imageViewBottom = 2131230884;
 			
 			// aapt resource value: 0x7f0800a1
-			public const int imageViewRight = 2131230881;
+			public const int imageViewLeft = 2131230881;
 			
 			// aapt resource value: 0x7f0800a2
-			public const int imageViewTop = 2131230882;
+			public const int imageViewRight = 2131230882;
 			
-			// aapt resource value: 0x7f0800b3
-			public const int info = 2131230899;
+			// aapt resource value: 0x7f0800a3
+			public const int imageViewTop = 2131230883;
+			
+			// aapt resource value: 0x7f0800b4
+			public const int info = 2131230900;
 			
 			// aapt resource value: 0x7f080000
 			public const int item_touch_helper_previous_elevation = 2131230720;
@@ -2603,11 +2610,11 @@ namespace Spritist
 			// aapt resource value: 0x7f080034
 			public const int left = 2131230772;
 			
-			// aapt resource value: 0x7f0800b8
-			public const int line1 = 2131230904;
+			// aapt resource value: 0x7f0800b9
+			public const int line1 = 2131230905;
 			
-			// aapt resource value: 0x7f0800ba
-			public const int line3 = 2131230906;
+			// aapt resource value: 0x7f0800bb
+			public const int line3 = 2131230907;
 			
 			// aapt resource value: 0x7f08000f
 			public const int listMode = 2131230735;
@@ -2615,38 +2622,38 @@ namespace Spritist
 			// aapt resource value: 0x7f080048
 			public const int list_item = 2131230792;
 			
-			// aapt resource value: 0x7f080099
-			public const int make_sprite_dropper_button = 2131230873;
-			
-			// aapt resource value: 0x7f080097
-			public const int make_sprite_eraser_button = 2131230871;
+			// aapt resource value: 0x7f08009a
+			public const int make_sprite_dropper_button = 2131230874;
 			
 			// aapt resource value: 0x7f080098
-			public const int make_sprite_fill_button = 2131230872;
+			public const int make_sprite_eraser_button = 2131230872;
 			
-			// aapt resource value: 0x7f08009e
-			public const int make_sprite_main_layout = 2131230878;
+			// aapt resource value: 0x7f080099
+			public const int make_sprite_fill_button = 2131230873;
 			
-			// aapt resource value: 0x7f080095
-			public const int make_sprite_menu_button = 2131230869;
+			// aapt resource value: 0x7f08009f
+			public const int make_sprite_main_layout = 2131230879;
 			
 			// aapt resource value: 0x7f080096
-			public const int make_sprite_pencil_button = 2131230870;
+			public const int make_sprite_menu_button = 2131230870;
 			
-			// aapt resource value: 0x7f08009c
-			public const int make_sprite_redo_button = 2131230876;
+			// aapt resource value: 0x7f080097
+			public const int make_sprite_pencil_button = 2131230871;
 			
-			// aapt resource value: 0x7f08009a
-			public const int make_sprite_settings_button = 2131230874;
+			// aapt resource value: 0x7f08009d
+			public const int make_sprite_redo_button = 2131230877;
 			
 			// aapt resource value: 0x7f08009b
-			public const int make_sprite_undo_button = 2131230875;
+			public const int make_sprite_settings_button = 2131230875;
 			
-			// aapt resource value: 0x7f0800be
-			public const int masked = 2131230910;
+			// aapt resource value: 0x7f08009c
+			public const int make_sprite_undo_button = 2131230876;
 			
-			// aapt resource value: 0x7f0800ac
-			public const int media_actions = 2131230892;
+			// aapt resource value: 0x7f0800bf
+			public const int masked = 2131230911;
+			
+			// aapt resource value: 0x7f0800ad
+			public const int media_actions = 2131230893;
 			
 			// aapt resource value: 0x7f080022
 			public const int middle = 2131230754;
@@ -2657,32 +2664,32 @@ namespace Spritist
 			// aapt resource value: 0x7f080019
 			public const int multiply = 2131230745;
 			
-			// aapt resource value: 0x7f0800bf
-			public const int nav_camera = 2131230911;
-			
-			// aapt resource value: 0x7f0800c7
-			public const int nav_exit_sprite = 2131230919;
-			
-			// aapt resource value: 0x7f0800c6
-			public const int nav_export = 2131230918;
-			
 			// aapt resource value: 0x7f0800c0
-			public const int nav_gallery = 2131230912;
+			public const int nav_camera = 2131230912;
 			
-			// aapt resource value: 0x7f0800c2
-			public const int nav_manage = 2131230914;
-			
-			// aapt resource value: 0x7f0800c5
-			public const int nav_save = 2131230917;
-			
-			// aapt resource value: 0x7f0800c4
-			public const int nav_send = 2131230916;
-			
-			// aapt resource value: 0x7f0800c3
-			public const int nav_share = 2131230915;
+			// aapt resource value: 0x7f0800c8
+			public const int nav_exit_sprite = 2131230920;
 			
 			// aapt resource value: 0x7f0800c1
-			public const int nav_slideshow = 2131230913;
+			public const int nav_gallery = 2131230913;
+			
+			// aapt resource value: 0x7f0800c3
+			public const int nav_manage = 2131230915;
+			
+			// aapt resource value: 0x7f0800c6
+			public const int nav_save = 2131230918;
+			
+			// aapt resource value: 0x7f0800c5
+			public const int nav_send = 2131230917;
+			
+			// aapt resource value: 0x7f0800c4
+			public const int nav_share = 2131230916;
+			
+			// aapt resource value: 0x7f0800c2
+			public const int nav_slideshow = 2131230914;
+			
+			// aapt resource value: 0x7f0800c7
+			public const int nav_upload = 2131230919;
 			
 			// aapt resource value: 0x7f080074
 			public const int nav_view = 2131230836;
@@ -2702,14 +2709,14 @@ namespace Spritist
 			// aapt resource value: 0x7f080010
 			public const int normal = 2131230736;
 			
-			// aapt resource value: 0x7f0800b5
-			public const int notification_background = 2131230901;
+			// aapt resource value: 0x7f0800b6
+			public const int notification_background = 2131230902;
+			
+			// aapt resource value: 0x7f0800b0
+			public const int notification_main_column = 2131230896;
 			
 			// aapt resource value: 0x7f0800af
-			public const int notification_main_column = 2131230895;
-			
-			// aapt resource value: 0x7f0800ae
-			public const int notification_main_column_container = 2131230894;
+			public const int notification_main_column_container = 2131230895;
 			
 			// aapt resource value: 0x7f080037
 			public const int parallax = 2131230775;
@@ -2732,11 +2739,11 @@ namespace Spritist
 			// aapt resource value: 0x7f080035
 			public const int right = 2131230773;
 			
-			// aapt resource value: 0x7f0800b4
-			public const int right_icon = 2131230900;
+			// aapt resource value: 0x7f0800b5
+			public const int right_icon = 2131230901;
 			
-			// aapt resource value: 0x7f0800b0
-			public const int right_side = 2131230896;
+			// aapt resource value: 0x7f0800b1
+			public const int right_side = 2131230897;
 			
 			// aapt resource value: 0x7f08001a
 			public const int screen = 2131230746;
@@ -2831,8 +2838,8 @@ namespace Spritist
 			// aapt resource value: 0x7f080036
 			public const int start = 2131230774;
 			
-			// aapt resource value: 0x7f0800ab
-			public const int status_bar_latest_event_content = 2131230891;
+			// aapt resource value: 0x7f0800ac
+			public const int status_bar_latest_event_content = 2131230892;
 			
 			// aapt resource value: 0x7f08005e
 			public const int submenuarrow = 2131230814;
@@ -2843,11 +2850,11 @@ namespace Spritist
 			// aapt resource value: 0x7f080011
 			public const int tabMode = 2131230737;
 			
-			// aapt resource value: 0x7f0800bb
-			public const int text = 2131230907;
+			// aapt resource value: 0x7f0800bc
+			public const int text = 2131230908;
 			
-			// aapt resource value: 0x7f0800b9
-			public const int text2 = 2131230905;
+			// aapt resource value: 0x7f0800ba
+			public const int text2 = 2131230906;
 			
 			// aapt resource value: 0x7f080052
 			public const int textSpacerNoButtons = 2131230802;
@@ -2855,8 +2862,8 @@ namespace Spritist
 			// aapt resource value: 0x7f080051
 			public const int textSpacerNoTitle = 2131230801;
 			
-			// aapt resource value: 0x7f0800a5
-			public const int textView = 2131230885;
+			// aapt resource value: 0x7f0800a6
+			public const int textView = 2131230886;
 			
 			// aapt resource value: 0x7f080086
 			public const int text_input_password_toggle = 2131230854;
@@ -2867,8 +2874,8 @@ namespace Spritist
 			// aapt resource value: 0x7f08000d
 			public const int textinput_error = 2131230733;
 			
-			// aapt resource value: 0x7f0800b1
-			public const int time = 2131230897;
+			// aapt resource value: 0x7f0800b2
+			public const int time = 2131230898;
 			
 			// aapt resource value: 0x7f08004a
 			public const int title = 2131230794;
@@ -2906,8 +2913,8 @@ namespace Spritist
 			// aapt resource value: 0x7f08000e
 			public const int view_offset_helper = 2131230734;
 			
-			// aapt resource value: 0x7f0800bd
-			public const int visible = 2131230909;
+			// aapt resource value: 0x7f0800be
+			public const int visible = 2131230910;
 			
 			// aapt resource value: 0x7f080027
 			public const int withText = 2131230759;
@@ -3232,6 +3239,12 @@ namespace Spritist
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f09002a
+			public const int ApplicationName = 2131296298;
+			
+			// aapt resource value: 0x7f090029
+			public const int Hello = 2131296297;
+			
 			// aapt resource value: 0x7f090000
 			public const int abc_action_bar_home_description = 2131296256;
 			
@@ -3325,11 +3338,11 @@ namespace Spritist
 			// aapt resource value: 0x7f090012
 			public const int abc_toolbar_collapse_description = 2131296274;
 			
-			// aapt resource value: 0x7f09002c
-			public const int action_settings = 2131296300;
+			// aapt resource value: 0x7f09002e
+			public const int action_settings = 2131296302;
 			
-			// aapt resource value: 0x7f090029
-			public const int app_name = 2131296297;
+			// aapt resource value: 0x7f09002b
+			public const int app_name = 2131296299;
 			
 			// aapt resource value: 0x7f090021
 			public const int appbar_scrolling_view_behavior = 2131296289;
@@ -3337,23 +3350,26 @@ namespace Spritist
 			// aapt resource value: 0x7f090022
 			public const int bottom_sheet_behavior = 2131296290;
 			
-			// aapt resource value: 0x7f09002f
-			public const int bundle_draw_tool_name = 2131296303;
+			// aapt resource value: 0x7f090032
+			public const int bundle_draw_tool_name = 2131296306;
 			
-			// aapt resource value: 0x7f09002e
-			public const int bundle_sprite_dimensions = 2131296302;
+			// aapt resource value: 0x7f090031
+			public const int bundle_sprite_dimensions = 2131296305;
+			
+			// aapt resource value: 0x7f090030
+			public const int bundle_sprite_name = 2131296304;
 			
 			// aapt resource value: 0x7f090023
 			public const int character_counter_pattern = 2131296291;
 			
+			// aapt resource value: 0x7f09002f
+			public const int dialog_new_sprite = 2131296303;
+			
 			// aapt resource value: 0x7f09002d
-			public const int dialog_new_sprite = 2131296301;
+			public const int navigation_drawer_close = 2131296301;
 			
-			// aapt resource value: 0x7f09002b
-			public const int navigation_drawer_close = 2131296299;
-			
-			// aapt resource value: 0x7f09002a
-			public const int navigation_drawer_open = 2131296298;
+			// aapt resource value: 0x7f09002c
+			public const int navigation_drawer_open = 2131296300;
 			
 			// aapt resource value: 0x7f090024
 			public const int password_toggle_content_description = 2131296292;

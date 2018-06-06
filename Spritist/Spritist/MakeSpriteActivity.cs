@@ -1,34 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
+using Amazon;
+using Amazon.Runtime;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Spritist.Amazon;
 using Spritist.Commands;
 using Spritist.Tools;
+using Spritist.Utilities;
 using static Android.Views.View;
+using JsonWriter = Newtonsoft.Json.JsonWriter;
 
 namespace Spritist
 {
     [Activity(Label = "MakeSpriteActivity")]
-    public class MakeSpriteActivity : Activity
+    public class MakeSpriteActivity : Activity, NavigationView.IOnNavigationItemSelectedListener
     {
+        private string spriteName;
         int w = 16;
         int h = 16;
         Canvas canvas;
         BitmapDrawable mainSpriteDisplay;
         Bitmap sourceBitmap;
-        ImageView imageView;
+        ImageView canvasView;
+        List<ImageView> tiledViews = new List<ImageView>(4);
 
         Canvas cursorCanvas;
         BitmapDrawable cursorSpriteDisplay;
@@ -65,8 +79,9 @@ namespace Spritist
         {
             base.OnCreate(savedInstanceState);
 
-
-            int[] dimensions = Intent.Extras.GetIntArray(
+            Bundle extras = Intent.Extras;
+            spriteName = extras.GetString(GetString(Resource.String.bundle_sprite_name));
+            int[] dimensions = extras.GetIntArray(
                 GetString(Resource.String.bundle_sprite_dimensions));
 
             w = dimensions[0];
@@ -86,11 +101,14 @@ namespace Spritist
                 Resource.String.navigation_drawer_open,
                 Resource.String.navigation_drawer_close);
             drawerLayout.AddDrawerListener(toggle);
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view_create_sprite);
+            navigationView.SetNavigationItemSelectedListener(this);
 
-            imageView = FindViewById<ImageView>(Resource.Id.imageView);
+
+            canvasView = FindViewById<ImageView>(Resource.Id.imageView);
             cursorView = FindViewById<ImageView>(Resource.Id.cursorView);
 
-            SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, imageView, w, h);
+            SetUpImage(ref this.canvas, ref this.mainSpriteDisplay, ref this.sourceBitmap, canvasView, w, h);
 
             commandHistory = new CommandHistory();
             //Seems redundant for now
@@ -104,46 +122,29 @@ namespace Spritist
             FrameLayout spriteMainLayout = FindViewById<FrameLayout>(Resource.Id.make_sprite_main_layout);
                 spriteMainLayout.Touch += OnSpriteCanvasTouched;
 
-
             SetupSideImageViews(Resource.Id.imageViewLeft, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewTop, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewRight, sourceBitmap);
             SetupSideImageViews(Resource.Id.imageViewBottom, sourceBitmap);
-            //SetUpImage(ref this.cursorCanvas, ref this.cursorSpriteDisplay, ref this.cursorBitmap, cursorView, 16, 16);
 
-            //sourceBitmap = Bitmap.CreateBitmap(w, h, Bitmap.Config.Argb8888); //Temporary width height
-            //mainSpriteDisplay = new BitmapDrawable(sourceBitmap);
-            //canvas = new Canvas(sourceBitmap);
-
-            //DrawableWrapper wr = new AliasDrawableWrapper(mainSpriteDisplay);
-            //imageView.SetImageDrawable(wr);
 
             canvas.DrawARGB(255, 255, 0, 255);
-            //cursorCanvas.DrawARGB(30, 200, 30, 255);
-
-            canvas.DrawLine(0, 0, 25, 25, new Paint()
-            {
-                Color = Color.Yellow
-            });
-            canvas.DrawPoint(2, 2, new Paint()
-            {
-                Color = Color.Red
-            });
 
             curX = cursorView.GetX();
             curY = cursorView.GetY();
 
-
-
             SetupButtons();
+
+            
         }
 
         private void SetupSideImageViews(int id, Bitmap srcBitmap)
         {
-            ImageView view = FindViewById<ImageView>(id);
-            var             drawable = new BitmapDrawable(srcBitmap);
+            ImageView       view     = FindViewById<ImageView>(id);
+            BitmapDrawable  drawable = new BitmapDrawable(srcBitmap);
             DrawableWrapper wr       = new AliasDrawableWrapper(drawable);
             view.SetImageDrawable(wr);
+            tiledViews.Add(view);
         }
 
         private void OnSpriteCanvasTouched(object sender, View.TouchEventArgs e)
@@ -206,13 +207,13 @@ namespace Spritist
                 (sender, args) =>
                 {
                     commandHistory.Undo();
-                    imageView.Invalidate();
+                    InvalidateImageViews();
                 };
             redoButton.Click +=
                 (sender, args) =>
                 {
                     commandHistory.Redo();
-                    imageView.Invalidate();
+                    InvalidateImageViews();
                 };
         }
 
@@ -229,6 +230,15 @@ namespace Spritist
             cursorView.Invalidate();
         }
 
+        public void InvalidateImageViews()
+        {
+            canvasView.Invalidate();
+            foreach (ImageView tiledView in tiledViews)
+            {
+                tiledView.Invalidate();
+            }
+        }
+
         bool holding = false;
         private void OnbuttonPush(object sender, TouchEventArgs e)
         {
@@ -238,14 +248,14 @@ namespace Spritist
                 down = true;
                 Console.WriteLine("Button pushed");
                 Console.WriteLine("Canvas X, Y: " + canvasX.ToString() + "," + canvasY.ToString());
-                imageView.Invalidate();
+                InvalidateImageViews();
             }
             else if (e.Event.Action == MotionEventActions.Up)
             {
                 currentTool.OnUp((int)this.canvasX, (int)this.canvasY);
                 down = false;
                 Console.WriteLine("Button released");
-                imageView.Invalidate();
+                InvalidateImageViews();
             }
         }
 
@@ -283,19 +293,19 @@ namespace Spritist
                     curY = y;
                     MoveCursor(dx, dy);
 
-                    if (cursorView.GetX() < imageView.GetX()) cursorView.SetX(imageView.GetX());
-                    else if (cursorView.GetX() > imageView.GetX() + imageView.Width) cursorView.SetX(imageView.GetX() + imageView.Width);
-                    if (cursorView.GetY() < imageView.GetY()) cursorView.SetY(imageView.GetY());
-                    else if (cursorView.GetY() > imageView.GetY() + imageView.Height) cursorView.SetY(imageView.GetY() + imageView.Height);
+                    if (cursorView.GetX() < canvasView.GetX() + 3.0f) cursorView.SetX(canvasView.GetX()+ 3.0f);
+                    else if (cursorView.GetX() > canvasView.GetX() + canvasView.Width - 3.0f) cursorView.SetX(canvasView.GetX() + (canvasView.Width- 3.0f));
+                    if (cursorView.GetY() < canvasView.GetY() + 3.0f) cursorView.SetY(canvasView.GetY()+3.0f);
+                    else if (cursorView.GetY() > canvasView.GetY() + canvasView.Height - 3.0f) cursorView.SetY(canvasView.GetY() + (canvasView.Height- 3.0f));
                     cursorView.Invalidate();
 
                     int[] position = new int[3];
-                    imageView.GetLocationOnScreen(position);
+                    canvasView.GetLocationOnScreen(position);
                     float canvasX = cursorX - position[0];
                     float canvasY = cursorY - position[1];
 
-                    canvasX = (canvasX / imageView.Width) * (float)w;
-                    canvasY = (canvasY / imageView.Height) * (float)h;
+                    canvasX = (canvasX / canvasView.Width) * (float)w;
+                    canvasY = (canvasY / canvasView.Height) * (float)h;
                     this.canvasX = canvasX;
                     this.canvasY = canvasY;
 
@@ -307,11 +317,71 @@ namespace Spritist
                             currentTool.OnMove((int)canvasX, (int)canvasY);
                         }
 
-                        imageView.Invalidate();
+                        InvalidateImageViews();
                     }
                 }
             }     
             return base.OnTouchEvent(e);
+        }
+
+        public bool OnNavigationItemSelected(IMenuItem menuItem)
+        {
+            int id = menuItem.ItemId;
+
+            if (id == Resource.Id.nav_upload)
+            {
+                UploadImage();
+            }
+            else if (id == Resource.Id.nav_exit_sprite)
+            {
+                this.Finish();
+            }
+
+            drawerLayout.CloseDrawer(GravityCompat.Start);
+            return true;
+        }
+
+        private void UploadImage()
+        {
+            // aws upload
+            var services = AmazonServices.Instance;
+            var client = services.Client;
+
+            // pack things into a stream
+            SpritistData data = new SpritistData(spriteName, sourceBitmap);
+            JsonSerializer serializer = new JsonSerializer();
+
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+            PutObjectRequest request = new PutObjectRequest()
+            {
+                BucketName = AmazonServices.BucketName,
+                Key = spriteName,
+                ContentBody = json
+            };
+            request.ContentType = AmazonServicesContentType.Json;
+
+            PutObjectResponse response = client.PutObjectAsync(request).Result;
+            Log.Info("Spritist.MakeSpriteActivity", "Put data");
+
+            //using (MemoryStream ms = new MemoryStream())
+            //using (StreamWriter streamWriter = new StreamWriter(ms))
+            //using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
+            //{
+            //    serializer.Serialize(jsonWriter, data);
+
+            //    PutObjectRequest request = new PutObjectRequest()
+            //    {
+            //        BucketName  = AmazonServices.BucketName,
+            //        ContentType = AmazonServicesContentType.Json,
+            //        Key = spriteName,
+            //        Content = ms
+            //    };
+
+            //    PutObjectResponse response = client.PutObjectAsync(request).Result;
+            //    Log.Info("Spritist.MakeSpriteActivity", "Put data");
+            //}
+
         }
     }
 }
