@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
@@ -19,11 +21,14 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Spritist.Amazon;
 using Spritist.Commands;
 using Spritist.Tools;
 using Spritist.Utilities;
 using static Android.Views.View;
+using JsonWriter = Newtonsoft.Json.JsonWriter;
 
 namespace Spritist
 {
@@ -336,22 +341,47 @@ namespace Spritist
             return true;
         }
 
-        private static void UploadImage()
+        private void UploadImage()
         {
             // aws upload
             var services = AmazonServices.Instance;
             var client = services.Client;
 
             // pack things into a stream
+            SpritistData data = new SpritistData(spriteName, sourceBitmap);
+            JsonSerializer serializer = new JsonSerializer();
 
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
 
             PutObjectRequest request = new PutObjectRequest()
             {
                 BucketName = AmazonServices.BucketName,
-                ContentType = AmazonServicesContentType.Binary
+                Key = spriteName,
+                ContentBody = json
             };
+            request.ContentType = AmazonServicesContentType.Json;
 
-            client.PutObjectAsync(request);
+            PutObjectResponse response = client.PutObjectAsync(request).Result;
+            Log.Info("Spritist.MakeSpriteActivity", "Put data");
+
+            //using (MemoryStream ms = new MemoryStream())
+            //using (StreamWriter streamWriter = new StreamWriter(ms))
+            //using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
+            //{
+            //    serializer.Serialize(jsonWriter, data);
+
+            //    PutObjectRequest request = new PutObjectRequest()
+            //    {
+            //        BucketName  = AmazonServices.BucketName,
+            //        ContentType = AmazonServicesContentType.Json,
+            //        Key = spriteName,
+            //        Content = ms
+            //    };
+
+            //    PutObjectResponse response = client.PutObjectAsync(request).Result;
+            //    Log.Info("Spritist.MakeSpriteActivity", "Put data");
+            //}
+
         }
     }
 }
