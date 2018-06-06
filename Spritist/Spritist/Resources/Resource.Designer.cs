@@ -2111,197 +2111,230 @@ namespace Spritist
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f02008e
-			public const int avd_hide_password_1 = 2130837646;
+			// aapt resource value: 0x7f020099
+			public const int avd_hide_password_1 = 2130837657;
 			
-			// aapt resource value: 0x7f02008f
-			public const int avd_hide_password_2 = 2130837647;
+			// aapt resource value: 0x7f02009a
+			public const int avd_hide_password_2 = 2130837658;
 			
-			// aapt resource value: 0x7f020090
-			public const int avd_hide_password_3 = 2130837648;
+			// aapt resource value: 0x7f02009b
+			public const int avd_hide_password_3 = 2130837659;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020091
-			public const int avd_show_password_1 = 2130837649;
+			// aapt resource value: 0x7f02009c
+			public const int avd_show_password_1 = 2130837660;
 			
-			// aapt resource value: 0x7f020092
-			public const int avd_show_password_2 = 2130837650;
+			// aapt resource value: 0x7f02009d
+			public const int avd_show_password_2 = 2130837661;
 			
-			// aapt resource value: 0x7f020093
-			public const int avd_show_password_3 = 2130837651;
+			// aapt resource value: 0x7f02009e
+			public const int avd_show_password_3 = 2130837662;
 			
 			// aapt resource value: 0x7f020055
-			public const int color_wheel_16x16 = 2130837589;
+			public const int baseline_cloud_upload_24 = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int color_wheel_32x32 = 2130837590;
+			public const int baseline_cloud_upload_black_18 = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int design_bottom_navigation_item_background = 2130837591;
+			public const int baseline_cloud_upload_black_18dp = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int design_fab_background = 2130837592;
+			public const int baseline_cloud_upload_black_24 = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int design_ic_visibility = 2130837593;
+			public const int baseline_cloud_upload_black_36 = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int design_ic_visibility_off = 2130837594;
+			public const int baseline_cloud_upload_black_48 = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int design_password_eye = 2130837595;
+			public const int baseline_exit_to_app_24 = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int design_snackbar_background = 2130837596;
+			public const int baseline_exit_to_app_black_18 = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int eraser_16x16 = 2130837597;
+			public const int baseline_exit_to_app_black_24 = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int eraser_32x32 = 2130837598;
+			public const int baseline_exit_to_app_black_36 = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int eraser_settings_16x16 = 2130837599;
+			public const int baseline_exit_to_app_black_48 = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int eraser_settings_32x32 = 2130837600;
+			public const int color_wheel_16x16 = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int eye_dropper_16x16 = 2130837601;
+			public const int color_wheel_32x32 = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int eye_dropper_32x32 = 2130837602;
+			public const int design_bottom_navigation_item_background = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int fill_bucket_16x16 = 2130837603;
+			public const int design_fab_background = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int ic_menu_camera = 2130837604;
+			public const int design_ic_visibility = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int ic_menu_gallery = 2130837605;
+			public const int design_ic_visibility_off = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int ic_menu_manage = 2130837606;
+			public const int design_password_eye = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int ic_menu_send = 2130837607;
+			public const int design_snackbar_background = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int ic_menu_share = 2130837608;
+			public const int eraser_16x16 = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int ic_menu_slideshow = 2130837609;
+			public const int eraser_32x32 = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int icons_tools = 2130837610;
+			public const int eraser_settings_16x16 = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int menu_16x16 = 2130837611;
+			public const int eraser_settings_32x32 = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int menu_32x32 = 2130837612;
+			public const int eye_dropper_16x16 = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int menu_icon = 2130837613;
+			public const int eye_dropper_32x32 = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int navigation_empty_icon = 2130837614;
+			public const int fill_bucket_16x16 = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int notification_action_background = 2130837615;
+			public const int ic_menu_camera = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int notification_bg = 2130837616;
+			public const int ic_menu_gallery = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int notification_bg_low = 2130837617;
+			public const int ic_menu_manage = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int notification_bg_low_normal = 2130837618;
+			public const int ic_menu_send = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int notification_bg_low_pressed = 2130837619;
+			public const int ic_menu_share = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int notification_bg_normal = 2130837620;
+			public const int ic_menu_slideshow = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int notification_bg_normal_pressed = 2130837621;
+			public const int icons_tools = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int notification_icon_background = 2130837622;
-			
-			// aapt resource value: 0x7f02008c
-			public const int notification_template_icon_bg = 2130837644;
-			
-			// aapt resource value: 0x7f02008d
-			public const int notification_template_icon_low_bg = 2130837645;
+			public const int menu_16x16 = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int notification_tile_bg = 2130837623;
+			public const int menu_32x32 = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int notify_panel_notification_icon_bg = 2130837624;
+			public const int menu_icon = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int Pencil = 2130837625;
+			public const int navigation_empty_icon = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int pencil_16x16 = 2130837626;
+			public const int notification_action_background = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int pencil_32x32 = 2130837627;
+			public const int notification_bg = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int pencil_icon = 2130837628;
+			public const int notification_bg_low = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int pencil_settings_16x16 = 2130837629;
+			public const int notification_bg_low_normal = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int pencil_settings_32x32 = 2130837630;
+			public const int notification_bg_low_pressed = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int redo_16x16 = 2130837631;
+			public const int notification_bg_normal = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int redo_32x32 = 2130837632;
+			public const int notification_bg_normal_pressed = 2130837632;
 			
 			// aapt resource value: 0x7f020081
-			public const int round_add_24 = 2130837633;
+			public const int notification_icon_background = 2130837633;
+			
+			// aapt resource value: 0x7f020097
+			public const int notification_template_icon_bg = 2130837655;
+			
+			// aapt resource value: 0x7f020098
+			public const int notification_template_icon_low_bg = 2130837656;
 			
 			// aapt resource value: 0x7f020082
-			public const int round_add_white_18 = 2130837634;
+			public const int notification_tile_bg = 2130837634;
 			
 			// aapt resource value: 0x7f020083
-			public const int round_add_white_24 = 2130837635;
+			public const int notify_panel_notification_icon_bg = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int round_add_white_36 = 2130837636;
+			public const int Pencil = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int round_add_white_48 = 2130837637;
+			public const int pencil_16x16 = 2130837637;
 			
 			// aapt resource value: 0x7f020086
-			public const int settings_16x16 = 2130837638;
+			public const int pencil_32x32 = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int side_nav_bar = 2130837639;
+			public const int pencil_icon = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int transparent_16x16 = 2130837640;
+			public const int pencil_settings_16x16 = 2130837640;
 			
 			// aapt resource value: 0x7f020089
-			public const int transparent_32x32 = 2130837641;
+			public const int pencil_settings_32x32 = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int undo_16x16 = 2130837642;
+			public const int redo_16x16 = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int undo_32x32 = 2130837643;
+			public const int redo_32x32 = 2130837643;
+			
+			// aapt resource value: 0x7f02008c
+			public const int round_add_24 = 2130837644;
+			
+			// aapt resource value: 0x7f02008d
+			public const int round_add_white_18 = 2130837645;
+			
+			// aapt resource value: 0x7f02008e
+			public const int round_add_white_24 = 2130837646;
+			
+			// aapt resource value: 0x7f02008f
+			public const int round_add_white_36 = 2130837647;
+			
+			// aapt resource value: 0x7f020090
+			public const int round_add_white_48 = 2130837648;
+			
+			// aapt resource value: 0x7f020091
+			public const int settings_16x16 = 2130837649;
+			
+			// aapt resource value: 0x7f020092
+			public const int side_nav_bar = 2130837650;
+			
+			// aapt resource value: 0x7f020093
+			public const int transparent_16x16 = 2130837651;
+			
+			// aapt resource value: 0x7f020094
+			public const int transparent_32x32 = 2130837652;
+			
+			// aapt resource value: 0x7f020095
+			public const int undo_16x16 = 2130837653;
+			
+			// aapt resource value: 0x7f020096
+			public const int undo_32x32 = 2130837654;
 			
 			static Drawable()
 			{
@@ -2367,8 +2400,8 @@ namespace Spritist
 			// aapt resource value: 0x7f080043
 			public const int action_mode_close_button = 2131230787;
 			
-			// aapt resource value: 0x7f0800cc
-			public const int action_settings = 2131230924;
+			// aapt resource value: 0x7f0800cb
+			public const int action_settings = 2131230923;
 			
 			// aapt resource value: 0x7f0800ac
 			public const int action_text = 2131230892;
@@ -2676,17 +2709,14 @@ namespace Spritist
 			// aapt resource value: 0x7f0800c3
 			public const int nav_camera = 2131230915;
 			
-			// aapt resource value: 0x7f0800cb
-			public const int nav_exit_sprite = 2131230923;
+			// aapt resource value: 0x7f0800ca
+			public const int nav_exit_sprite = 2131230922;
 			
 			// aapt resource value: 0x7f0800c4
 			public const int nav_gallery = 2131230916;
 			
 			// aapt resource value: 0x7f0800c6
 			public const int nav_manage = 2131230918;
-			
-			// aapt resource value: 0x7f0800c9
-			public const int nav_save = 2131230921;
 			
 			// aapt resource value: 0x7f0800c8
 			public const int nav_send = 2131230920;
@@ -2697,8 +2727,8 @@ namespace Spritist
 			// aapt resource value: 0x7f0800c5
 			public const int nav_slideshow = 2131230917;
 			
-			// aapt resource value: 0x7f0800ca
-			public const int nav_upload = 2131230922;
+			// aapt resource value: 0x7f0800c9
+			public const int nav_upload = 2131230921;
 			
 			// aapt resource value: 0x7f080074
 			public const int nav_view = 2131230836;
@@ -3351,7 +3381,7 @@ namespace Spritist
 			public const int abc_toolbar_collapse_description = 2131296274;
 			
 			// aapt resource value: 0x7f09002e
-			public const int action_settings = 2131296302;
+			public const int action_refresh = 2131296302;
 			
 			// aapt resource value: 0x7f09002b
 			public const int app_name = 2131296299;

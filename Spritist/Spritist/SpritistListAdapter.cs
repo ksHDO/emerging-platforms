@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -37,7 +38,11 @@ namespace Spritist
 
             byte[] decoded = Base64.Decode(data.ImageData, Base64Flags.Default);
             Bitmap bitmap = BitmapFactory.DecodeByteArray(decoded, 0, decoded.Length);
-            imageView.SetImageBitmap(bitmap);
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+            AliasDrawableWrapper wr = new AliasDrawableWrapper(bitmapDrawable);
+            // imageView.SetImageBitmap(bitmap);
+            imageView.SetImageDrawable(wr);
+
             textView.Text = data.SpriteName;
             
             return convertView;

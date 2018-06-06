@@ -72,6 +72,8 @@ namespace Spritist
             int id = item.ItemId;
             if (id == Resource.Id.action_settings)
             {
+                RetrieveListOfObjects();
+                Toast.MakeText(this, "Refreshed List.", ToastLength.Short);
                 return true;
             }
 

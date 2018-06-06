@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon;
@@ -21,6 +22,7 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Java.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Spritist.Amazon;
@@ -35,6 +37,7 @@ namespace Spritist
     [Activity(Label = "MakeSpriteActivity")]
     public class MakeSpriteActivity : Activity, NavigationView.IOnNavigationItemSelectedListener
     {
+        
         private string spriteName;
         int w = 16;
         int h = 16;
@@ -73,6 +76,7 @@ namespace Spritist
             DrawableWrapper wr = new AliasDrawableWrapper(drawable);
             view.SetImageDrawable(wr);          
         }
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -337,6 +341,25 @@ namespace Spritist
             return true;
         }
 
+        private static string GenerateKey(int size)
+        {
+            string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            byte[] data = new byte[1];
+            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+            {
+                crypto.GetNonZeroBytes(data);
+                data = new byte[size];
+                crypto.GetNonZeroBytes(data);
+            }
+            string result = "";
+            foreach (byte b in data)
+            {
+                result += chars[b % chars.Length];
+            }
+
+            return result;
+        }
+
         private async void UploadImage()
         {
             // aws upload
@@ -345,23 +368,19 @@ namespace Spritist
 
             // pack things into a stream
             SpritistData data = new SpritistData(spriteName, sourceBitmap);
-            JsonSerializer serializer = new JsonSerializer();
 
             string json = JsonConvert.SerializeObject(data, Formatting.Indented);
 
             PutObjectRequest request = new PutObjectRequest()
             {
                 BucketName = AmazonServices.BucketName,
-                Key = spriteName,
+                Key = spriteName + "-" + GenerateKey(10),
                 ContentBody = json
             };
             request.ContentType = AmazonServicesContentType.Json;
 
-            PutObjectResponse response = client.PutObjectAsync(request).Result;
-            Log.Info("Spritist.MakeSpriteActivity", "Put data");
-
             await client.PutObjectAsync(request);
-
+            Toast.MakeText(this, "Uploaded Image.", ToastLength.Long);
 
             //using (MemoryStream ms = new MemoryStream())
             //using (StreamWriter streamWriter = new StreamWriter(ms))

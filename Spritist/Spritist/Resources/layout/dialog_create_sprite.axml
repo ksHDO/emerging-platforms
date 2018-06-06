@@ -16,20 +16,14 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content" />
-        <GridLayout
+        <EditText
+            android:inputType="text"
+            android:text="Sprite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:rowCount="1"
-            android:orientation="horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="true">
-            <EditText
-                android:inputType="text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/dialog_create_sprite_sprite_name" />
-        </GridLayout>
+            android:layout_alignParentRight="true"
+            android:id="@+id/dialog_create_sprite_sprite_name" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
