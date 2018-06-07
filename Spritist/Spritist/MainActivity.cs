@@ -125,28 +125,36 @@ namespace Spritist
             return true;
         }
 
-        public void RetrieveListOfObjects()
+        public async void RetrieveListOfObjects()
         {
             AmazonS3Client client = AmazonServices.Instance(Assets).Client;
             ListObjectsRequest listRequest = new ListObjectsRequest()
             {
                 BucketName = AmazonServices.BucketName
             };
-            ListObjectsResponse listResponse = client.ListObjectsAsync(listRequest).Result;
-            
-            var objects = listResponse.S3Objects.Select(o =>
+            try
             {
-                string file;
-                using (var response = client.GetObjectAsync(AmazonServices.BucketName, o.Key).Result)
-                using ( var reader = new StreamReader(response.ResponseStream))
-                {
-                    file = reader.ReadToEnd();
-                }
+                ListObjectsResponse listResponse = await client.ListObjectsAsync(listRequest);
 
-                SpritistData data = JsonConvert.DeserializeObject<SpritistData>(file);
-                return data;
-            });
-            listView.Adapter = new SpritistListAdapter(this, objects);
+                var objects = listResponse.S3Objects.Select(o =>
+                {
+                    string file;
+                    using (var response = client.GetObjectAsync(AmazonServices.BucketName, o.Key).Result)
+                    using (var reader = new StreamReader(response.ResponseStream))
+                    {
+                        file = reader.ReadToEnd();
+                    }
+
+                    SpritistData data = JsonConvert.DeserializeObject<SpritistData>(file);
+                    return data;
+                });
+                listView.Adapter = new SpritistListAdapter(this, objects);
+            }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, "Could not load images", ToastLength.Long);
+            }
+
         }
     }
 }
